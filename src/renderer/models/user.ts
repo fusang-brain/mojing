@@ -3,7 +3,7 @@ import { Reducer } from 'redux';
 import { AxiosResponse } from 'axios';
 import { findUserInfo } from '@/services/user';
 import { isStateSuccess } from '@/utils/request';
-import { getCurrentEnterprise } from '@/services/enterprise';
+import { getCurrentEnterprise, setCurrentEnterprise } from '@/services/enterprise';
 import { ConnectState } from './connect';
 import { routerRedux } from 'dva/router';
 
@@ -11,6 +11,7 @@ import { routerRedux } from 'dva/router';
 
 export interface CurrentUser {
   id?: string;
+  avatar?: string;
   _id?: string;
   enterprises?: string[];
   deleted?: boolean;
@@ -65,23 +66,25 @@ const UserModel: UserModelType = {
       //   type: 'fetchCurrent',
       // });
     },
-    *fetchAfterLogin(action, { call, put }) {
+    *fetchAfterLogin(action, { call, put, take }) {
       const { payload } = action;
       const { redirect } = payload;
+
       yield put({
         type: 'fetchCurrent',
       });
-      
+      yield take('fetchCurrent/@@end');
+      yield put({
+        type: 'fetchCurrentEnterprise',
+      });
+
       yield put(routerRedux.replace(redirect || '/'));
     },
-    *fetchCurrent(_, { call, put }) {
+    *fetchCurrent(_, { call, put, take }) {
       console.log('fetch current');
-      
+
       const resp: AxiosResponse = yield call(findUserInfo);
-      // const { status } = resp;
-      // if (!isStateSuccess(resp)) {
-      //   return false;
-      // }
+
       if (!isStateSuccess(resp)) {
         return false;
       }
@@ -90,12 +93,14 @@ const UserModel: UserModelType = {
       const { enterprises } = info;
 
       if (enterprises.length <= 0) {
-        console.log('to create enterprise');
-        // yield put(routerRedux.replace('/Enterprise/CreateEnterprise'));
         yield put({
           type: 'saveCurrentUser',
           payload: info,
         });
+
+        yield take('saveCurrentUser/@@end');
+
+        yield put(routerRedux.replace('/enterprise/create'));
 
         return false;
       }
@@ -105,7 +110,9 @@ const UserModel: UserModelType = {
         payload: info,
       });
     },
+
     *fetchCurrentEnterprise(_, { call, put, select }) {
+      console.log('fetch current enterprise');
       // const { put, call, select } = effects;
       const user = yield select((s: ConnectState) => s.user.currentUser);
       const { enterprises = [] } = user;
@@ -120,7 +127,7 @@ const UserModel: UserModelType = {
         type: 'saveCurrentEnterprise',
         payload: enterprise,
       });
-    }
+    },
   },
 
   reducers: {
@@ -131,6 +138,7 @@ const UserModel: UserModelType = {
       };
     },
     saveCurrentEnterprise(state, action) {
+      setCurrentEnterprise(action.payload);
       return {
         ...state,
         currentEnterprise: action.payload || '',

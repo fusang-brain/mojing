@@ -4,6 +4,7 @@ import router from './router.config';
 import slash from 'slash2';
 import webpackPlugin from './plugin.config';
 const { pwa, primaryColor } = defaultSettings;
+import darkTheme from './theme/dark';
 
 // preview.pro.ant.design only do not use in your production ;
 // preview.pro.ant.design 专用环境变量，请不要在你的项目中使用它。
@@ -103,6 +104,7 @@ export default {
   ignoreMomentLocale: true,
   lessLoaderOptions: {
     javascriptEnabled: true,
+    modifyVars: darkTheme,
   },
   disableRedirectHoist: true,
   cssLoaderOptions: {
@@ -141,11 +143,11 @@ export default {
   },
   chainWebpack: webpackPlugin,
   proxy: {
-    "/apis": {
+    '/apis': {
       // "target": "http://store.api.meyup.io",
-      "target": "http://localhost:7001",
-      "changeOrigin": true,
-      "pathRewrite": { "^/apis" : "" }
+      target: 'http://localhost:7001',
+      changeOrigin: true,
+      pathRewrite: { '^/apis': '' },
     },
   },
   /*

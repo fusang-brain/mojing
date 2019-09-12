@@ -30,14 +30,17 @@ export function getHostname() {
 }
 
 export function genHashcode(body: any): string {
-  let str = ''
+  let str = '';
   if (typeof body === 'string') {
     str = body;
   }
 
   str = JSON.stringify(body);
 
-  return hash.sha256().update(str).digest('hex');
+  return hash
+    .sha256()
+    .update(str)
+    .digest('hex');
 }
 
 export function matchUrls(urls: Array<string>, pathname: string): boolean {
@@ -68,19 +71,20 @@ export function matchUrls(urls: Array<string>, pathname: string): boolean {
 // }
 
 export type PowerPartial<T> = {
-  [U in keyof T]?: T[U] extends object
-    ? PowerPartial<T[U]>
-    : T[U]
+  [U in keyof T]?: T[U] extends object ? PowerPartial<T[U]> : T[U];
 };
 
-export function genOrderNO(prefix?:string): string {
+export function genOrderNO(prefix?: string): string {
   const t = new Date();
   return lodash.uniqueId(`${prefix}${t.getTime()}`);
 }
 
-export function genProductCode(prefix?: string):string {
+export function genProductCode(prefix?: string): string {
   const t = new Date();
-  return lodash.uniqueId(`PD${prefix}${t.getTime()}`);
+  const head = `PD${prefix || ''}`;
+  const body = t.getTime() * 100000;
+  const uniqueBody = body + lodash.uniqueId();
+  return `${head}${uniqueBody}`;
 }
 
 // export function isTouchedAll(keys: string[], touched: FormikTouched<any>) {
@@ -93,19 +97,19 @@ export function genProductCode(prefix?: string):string {
 //   return true;
 // }
 
-export const dispatch: (action: AnyAction) => Promise<any> = (action) => {
+export const dispatch: (action: AnyAction) => Promise<any> = action => {
   const gApp = window['g_app'];
   if (gApp._store && gApp._store.dispatch) {
     return gApp._store.dispatch(action);
   }
 
-  return null; 
-}
+  return null;
+};
 
 export function beautySubstr(str: string, len: number): string {
-  let reg = /[\u4e00-\u9fa5]/g;    //专业匹配中文
+  let reg = /[\u4e00-\u9fa5]/g; //专业匹配中文
   let slice = str.substring(0, len) || '';
-  let chineseCharNum = (~~(slice.match(reg) || '' && (slice.match(reg) || '').length));
+  let chineseCharNum = ~~(slice.match(reg) || ('' && (slice.match(reg) || '').length));
   let realen = slice.length * 2 - chineseCharNum;
-  return str.substr(0, realen) + (realen < str.length ? "..." : "");
+  return str.substr(0, realen) + (realen < str.length ? '...' : '');
 }

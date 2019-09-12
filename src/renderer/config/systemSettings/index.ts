@@ -12,7 +12,6 @@ try {
   nodeENV = null;
 }
 
-
 // export default {
 //   rootPath: path.resolve(__dirname, 'src/'),
 //   ...defaultConfig,
@@ -20,6 +19,12 @@ try {
 //   ...(nodeENV !== 'development' && production),
 // };
 
-type SettingType = (typeof defaultConfig) & (typeof development) & (typeof production);
+export type SystemSettingType = (typeof defaultConfig) & (typeof development) & (typeof production);
 
-export default Object.assign({}, {rootPath: path.resolve(__dirname, 'src/')}, defaultConfig, development, (nodeENV !== 'development' ? production : {})) as SettingType;
+export default Object.assign(
+  {},
+  { rootPath: path.resolve(__dirname, 'src/') },
+  defaultConfig,
+  development,
+  nodeENV !== 'development' ? production : {},
+) as SystemSettingType;

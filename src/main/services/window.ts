@@ -11,12 +11,11 @@ let count = 0;
 export function create(opts: BrowserWindowConstructorOptions) {
   count += 1;
   opts.title = config.get('productName') as string;
-  let win: BrowserWindow|null = new BrowserWindow(opts);
+  let win: BrowserWindow | null = new BrowserWindow(opts);
 
   // win.webContents.openDevTools();
-  
+
   win.on('close', () => {
-    
     count -= 1;
     win = null;
 
@@ -33,7 +32,6 @@ export function getCount() {
 }
 
 export function getPath() {
-
   const $dirname = getDirname();
   // console.log($dirname, 'dirname');
   // let path = `file://${join($dirname, '..', 'renderer')}/index.html`
@@ -44,7 +42,7 @@ export function getPath() {
   });
 
   if (is.dev()) {
-    path = 'http://127.0.0.1:8000/';
+    path = 'http://127.0.0.1:8520/';
   }
   return path;
 }

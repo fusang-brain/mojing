@@ -1,4 +1,4 @@
-import { IRoute } from "umi-types";
+import { IRoute } from 'umi-types';
 
 export default [
   {
@@ -28,21 +28,20 @@ export default [
           {
             path: '/welcome',
             name: 'welcome',
-            icon: 'smile',
+            icon: 'icon-home',
             component: './Welcome',
           },
           {
             path: '/enterprise/',
             name: 'enterprise',
             exact: false,
-            hideInMenu: false,
+            hideInMenu: true,
             routes: [
               {
                 path: '/enterprise/create',
                 name: 'create',
                 icon: 'block',
                 component: './enterprise/create',
-                
               },
             ],
           },
@@ -50,48 +49,69 @@ export default [
             path: '/product/',
             name: 'product',
             exact: false,
+            icon: 'icon-list',
             routes: [
               {
                 path: '/product/add',
                 name: 'add',
-                icon: 'block',
+                icon: 'icon-touch',
                 component: './product/add',
               },
               {
                 path: '/product/query',
                 name: 'query',
-                icon: 'block',
+                icon: 'icon-touch',
                 component: './product/query',
-              }
+              },
             ],
+          },
+          {
+            path: '/finance/',
+            name: 'finance',
+            exact: false,
+            icon: 'icon-finance',
+            component: './finance/',
           },
           {
             path: '/stock/',
             name: 'stock',
-            icon: 'stock',
+            icon: 'icon-stock',
             exact: false,
             routes: [
               {
                 path: '/stock/instock',
                 name: 'instock',
-                icon: 'block',
+                icon: 'icon-touch',
                 component: './stock/instock',
               },
               {
                 path: '/stock/outstock',
                 name: 'outstock',
-                icon: 'block',
+                icon: 'icon-touch',
                 component: './stock/outstock',
               },
               {
                 path: '/stock/query',
                 name: 'query',
-                icon: 'block',
+                icon: 'icon-touch',
                 component: './stock/query',
               },
-            ]
+            ],
           },
-          
+          {
+            path: '/member',
+            name: 'member',
+            exact: false,
+            icon: 'icon-member',
+            component: './member',
+          },
+          {
+            path: '/setting',
+            name: 'setting',
+            exact: false,
+            icon: 'icon-setting',
+            component: './setting',
+          },
           {
             component: './404',
           },

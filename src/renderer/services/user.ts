@@ -8,13 +8,13 @@ export async function findOperators(enterprise: string) {
     method: 'get',
     params: {
       enterprise,
-    }
+    },
   });
 }
 
 export async function findUserInfo(uid: string = '') {
   return request('user/info', {
-    method: 'get'
+    method: 'get',
   });
 }
 
@@ -24,4 +24,8 @@ export async function getCurrentEnterprise() {
 
 export function saveCurrentEnterprise(enterprse: string) {
   return Storage.setItem(LOCAL_CURRENT_ENTERPRISE, enterprse);
+}
+
+export function queryNotices() {
+  return null;
 }

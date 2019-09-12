@@ -4,13 +4,12 @@ import hash from 'hash.js';
 import { genHashcode } from './helper';
 import Storage from './Storage';
 
-
 const LOCAL_CURRENT_ENTERPRISE = 'local_current_enterprise';
 
 const defaultAuthorization: Authorization = {
   authority: 'guest',
   token: 'notoken',
-}
+};
 
 let CurrentAuthorization = defaultAuthorization;
 
@@ -24,21 +23,20 @@ const reloadAuthorized = (): void => {
   // reloadAuthorization();
 };
 
-
 const AUTH_KEY = genHashcode('mojing-authority');
 const AUTH_HASH = genHashcode('mojing-auth-hashcode');
 
-
 export interface Authorization {
-  authority:string|string[];
-  token:string;
-  uid?:string;
+  authority: string | string[];
+  token: string;
+  uid?: string;
 }
-
 
 export function getAuthorization() {
   const foundAuthorization = localStorage.getItem(AUTH_KEY);
-  const parsedAuthorization: Authorization = foundAuthorization ? JSON.parse(foundAuthorization) : defaultAuthorization;
+  const parsedAuthorization: Authorization = foundAuthorization
+    ? JSON.parse(foundAuthorization)
+    : defaultAuthorization;
   return parsedAuthorization || defaultAuthorization;
 }
 
@@ -46,8 +44,11 @@ export function getAccessToken() {
   return CurrentAuthorization.token;
 }
 
-export function hashAuth(body: string):string {
-  return hash.sha256().update(body).digest('hex');
+export function hashAuth(body: string): string {
+  return hash
+    .sha256()
+    .update(body)
+    .digest('hex');
 }
 
 export function getAuthHashFromSession(): string {
@@ -71,11 +72,10 @@ export function setAccessToken(token: string) {
 }
 
 // use localStorage to store the authority info, which might be sent from server in actual project.
-export function getAuthority(str?: string): (string | string[]) {
+export function getAuthority(str?: string): string | string[] {
   const currentAuthority = CurrentAuthorization.authority;
-  const authorityString =
-    typeof str === 'undefined' ? currentAuthority : str;
-  let authority: (string | string[]) = 'guest';
+  const authorityString = typeof str === 'undefined' ? currentAuthority : str;
+  let authority: string | string[] = 'guest';
   try {
     if (authorityString) {
       authority = authorityString;
@@ -100,7 +100,13 @@ export function setAuthority(authority: string | string[]): void {
 export const reloadAuthorization = () => {
   CurrentAuthorization = getAuthorization();
   reloadAuthorized();
-}
+};
+
+export const clearAuthorization = () => {
+  sessionStorage.removeItem(AUTH_HASH);
+  localStorage.removeItem(AUTH_KEY);
+  reloadAuthorization();
+};
 
 export { reloadAuthorized };
 

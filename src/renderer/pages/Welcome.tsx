@@ -1,12 +1,13 @@
 import React from 'react';
-import { Card, Typography } from 'antd';
+import { Card, Typography, Icon } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { FormattedMessage } from 'umi-plugin-react/locale';
+// import { HomeIcon } from '@/components/SvgIcons';
 
 const CodePreview: React.FC<{}> = ({ children }) => (
   <pre
     style={{
-      background: '#f2f4f5',
+      // background: '#f2f4f5',
       padding: '12px 20px',
       margin: '12px 0',
     }}
@@ -16,6 +17,10 @@ const CodePreview: React.FC<{}> = ({ children }) => (
     </code>
   </pre>
 );
+
+const IconFont = Icon.createFromIconfontCN({
+  scriptUrl: '//at.alicdn.com/t/font_1401573_wgrpkp0snv.js',
+});
 
 export default (): React.ReactNode => (
   <PageHeaderWrapper>
@@ -28,7 +33,260 @@ export default (): React.ReactNode => (
           />
         </a>
       </Typography.Text>
-      <CodePreview>npx umi block list</CodePreview>
+
+      <CodePreview> npx umi block list</CodePreview>
+      <Typography.Text
+        strong
+        style={{
+          marginBottom: 12,
+        }}
+      >
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://pro.ant.design/docs/available-script#npm-run-fetchblocks"
+        >
+          <FormattedMessage id="app.welcome.link.fetch-blocks" defaultMessage="获取全部区块" />
+        </a>
+      </Typography.Text>
+      <CodePreview> npm run fetch:blocks</CodePreview>
+    </Card>
+
+    <Card>
+      <Typography.Text strong>
+        <a target="_blank" rel="noopener noreferrer" href="https://pro.ant.design/docs/block">
+          <FormattedMessage
+            id="app.welcome.link.block-list"
+            defaultMessage="基于 block 开发，快速构建标准页面"
+          />
+        </a>
+      </Typography.Text>
+
+      <CodePreview> npx umi block list</CodePreview>
+      <Typography.Text
+        strong
+        style={{
+          marginBottom: 12,
+        }}
+      >
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://pro.ant.design/docs/available-script#npm-run-fetchblocks"
+        >
+          <FormattedMessage id="app.welcome.link.fetch-blocks" defaultMessage="获取全部区块" />
+        </a>
+      </Typography.Text>
+      <CodePreview> npm run fetch:blocks</CodePreview>
+    </Card>
+
+    <Card>
+      <Typography.Text strong>
+        <a target="_blank" rel="noopener noreferrer" href="https://pro.ant.design/docs/block">
+          <FormattedMessage
+            id="app.welcome.link.block-list"
+            defaultMessage="基于 block 开发，快速构建标准页面"
+          />
+        </a>
+      </Typography.Text>
+
+      <CodePreview> npx umi block list</CodePreview>
+      <Typography.Text
+        strong
+        style={{
+          marginBottom: 12,
+        }}
+      >
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://pro.ant.design/docs/available-script#npm-run-fetchblocks"
+        >
+          <FormattedMessage id="app.welcome.link.fetch-blocks" defaultMessage="获取全部区块" />
+        </a>
+      </Typography.Text>
+      <CodePreview> npm run fetch:blocks</CodePreview>
+    </Card>
+
+    <Card>
+      <Typography.Text strong>
+        <a target="_blank" rel="noopener noreferrer" href="https://pro.ant.design/docs/block">
+          <FormattedMessage
+            id="app.welcome.link.block-list"
+            defaultMessage="基于 block 开发，快速构建标准页面"
+          />
+        </a>
+      </Typography.Text>
+
+      <CodePreview> npx umi block list</CodePreview>
+      <Typography.Text
+        strong
+        style={{
+          marginBottom: 12,
+        }}
+      >
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://pro.ant.design/docs/available-script#npm-run-fetchblocks"
+        >
+          <FormattedMessage id="app.welcome.link.fetch-blocks" defaultMessage="获取全部区块" />
+        </a>
+      </Typography.Text>
+      <CodePreview> npm run fetch:blocks</CodePreview>
+    </Card>
+
+    <Card>
+      <Typography.Text strong>
+        <a target="_blank" rel="noopener noreferrer" href="https://pro.ant.design/docs/block">
+          <FormattedMessage
+            id="app.welcome.link.block-list"
+            defaultMessage="基于 block 开发，快速构建标准页面"
+          />
+        </a>
+      </Typography.Text>
+
+      <CodePreview> npx umi block list</CodePreview>
+      <Typography.Text
+        strong
+        style={{
+          marginBottom: 12,
+        }}
+      >
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://pro.ant.design/docs/available-script#npm-run-fetchblocks"
+        >
+          <FormattedMessage id="app.welcome.link.fetch-blocks" defaultMessage="获取全部区块" />
+        </a>
+      </Typography.Text>
+      <CodePreview> npm run fetch:blocks</CodePreview>
+    </Card>
+
+    <Card>
+      <Typography.Text strong>
+        <a target="_blank" rel="noopener noreferrer" href="https://pro.ant.design/docs/block">
+          <FormattedMessage
+            id="app.welcome.link.block-list"
+            defaultMessage="基于 block 开发，快速构建标准页面"
+          />
+        </a>
+      </Typography.Text>
+
+      <CodePreview> npx umi block list</CodePreview>
+      <Typography.Text
+        strong
+        style={{
+          marginBottom: 12,
+        }}
+      >
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://pro.ant.design/docs/available-script#npm-run-fetchblocks"
+        >
+          <FormattedMessage id="app.welcome.link.fetch-blocks" defaultMessage="获取全部区块" />
+        </a>
+      </Typography.Text>
+      <CodePreview> npm run fetch:blocks</CodePreview>
+    </Card>
+
+    <Card>
+      <Typography.Text strong>
+        <a target="_blank" rel="noopener noreferrer" href="https://pro.ant.design/docs/block">
+          <FormattedMessage
+            id="app.welcome.link.block-list"
+            defaultMessage="基于 block 开发，快速构建标准页面"
+          />
+        </a>
+      </Typography.Text>
+
+      <CodePreview> npx umi block list</CodePreview>
+      <Typography.Text
+        strong
+        style={{
+          marginBottom: 12,
+        }}
+      >
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://pro.ant.design/docs/available-script#npm-run-fetchblocks"
+        >
+          <FormattedMessage id="app.welcome.link.fetch-blocks" defaultMessage="获取全部区块" />
+        </a>
+      </Typography.Text>
+      <CodePreview> npm run fetch:blocks</CodePreview>
+    </Card>
+
+    <Card>
+      <Typography.Text strong>
+        <a target="_blank" rel="noopener noreferrer" href="https://pro.ant.design/docs/block">
+          <FormattedMessage
+            id="app.welcome.link.block-list"
+            defaultMessage="基于 block 开发，快速构建标准页面"
+          />
+        </a>
+      </Typography.Text>
+
+      <CodePreview> npx umi block list</CodePreview>
+      <Typography.Text
+        strong
+        style={{
+          marginBottom: 12,
+        }}
+      >
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://pro.ant.design/docs/available-script#npm-run-fetchblocks"
+        >
+          <FormattedMessage id="app.welcome.link.fetch-blocks" defaultMessage="获取全部区块" />
+        </a>
+      </Typography.Text>
+      <CodePreview> npm run fetch:blocks</CodePreview>
+    </Card>
+
+    <Card>
+      <Typography.Text strong>
+        <a target="_blank" rel="noopener noreferrer" href="https://pro.ant.design/docs/block">
+          <FormattedMessage
+            id="app.welcome.link.block-list"
+            defaultMessage="基于 block 开发，快速构建标准页面"
+          />
+        </a>
+      </Typography.Text>
+
+      <CodePreview> npx umi block list</CodePreview>
+      <Typography.Text
+        strong
+        style={{
+          marginBottom: 12,
+        }}
+      >
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://pro.ant.design/docs/available-script#npm-run-fetchblocks"
+        >
+          <FormattedMessage id="app.welcome.link.fetch-blocks" defaultMessage="获取全部区块" />
+        </a>
+      </Typography.Text>
+      <CodePreview> npm run fetch:blocks</CodePreview>
+    </Card>
+
+    <Card>
+      <Typography.Text strong>
+        <a target="_blank" rel="noopener noreferrer" href="https://pro.ant.design/docs/block">
+          <FormattedMessage
+            id="app.welcome.link.block-list"
+            defaultMessage="基于 block 开发，快速构建标准页面"
+          />
+        </a>
+      </Typography.Text>
+
+      <CodePreview> npx umi block list</CodePreview>
       <Typography.Text
         strong
         style={{
@@ -52,5 +310,11 @@ export default (): React.ReactNode => (
       </a>
       。
     </p>
+
+    <div className="icons-list">
+      <IconFont type="icon-home" />
+      <IconFont type="icon-touch" />
+      <IconFont type="icon-finance" />
+    </div>
   </PageHeaderWrapper>
 );

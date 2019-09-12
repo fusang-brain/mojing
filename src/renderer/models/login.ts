@@ -3,8 +3,16 @@ import { routerRedux } from 'dva/router';
 import { Effect } from 'dva';
 import { stringify } from 'querystring';
 
-import { setRememberMe, isRememberMe, accountLogin } from '@/services/login';
-import { reloadAuthorization, Authorization, setAuthorization, getAuthorization, getAuthHash, getAuthHashFromSession } from '@/utils/Authorized';
+import { setRememberMe, isRememberMe, accountLogin, clearRememberMe } from '@/services/login';
+import {
+  reloadAuthorization,
+  Authorization,
+  setAuthorization,
+  getAuthorization,
+  getAuthHash,
+  getAuthHashFromSession,
+  clearAuthorization,
+} from '@/utils/Authorized';
 import { getPageQuery } from '@/utils/utils';
 
 import { getEnterpriseByUserID, getCurrentEnterprise } from '@/services/enterprise';
@@ -44,16 +52,16 @@ export interface StateType {
   // type?: string;
   // currentAuthority?: 'user' | 'guest' | 'admin';
   token?: string;
-  authority?: ('user' | 'guest' | 'admin');
-  user_id?:string;
-  rememberMe?:boolean;
+  authority?: 'user' | 'guest' | 'admin';
+  user_id?: string;
+  rememberMe?: boolean;
 }
 
 export interface LoginModelType extends ModelType<StateType> {
   namespace: string;
   state: StateType;
   effects: {
-    autoLogin: Effect,
+    autoLogin: Effect;
     login: Effect;
     getCaptcha: Effect;
     logout: Effect;
@@ -77,7 +85,7 @@ const Model: LoginModelType = {
       dispatch({
         type: 'autoLogin',
       });
-    }
+    },
   },
 
   effects: {
@@ -94,18 +102,16 @@ const Model: LoginModelType = {
       const { status } = resp;
 
       if (status === 201) {
-        const { 
+        const {
           data: {
             token = '',
             authority,
-            authorization: {
-              user_id,
-            }
-          }
+            authorization: { user_id },
+          },
         } = resp;
 
         // const enterprise = yield call(findCurrentEnterprise, user_id);
-  
+
         yield put({
           type: 'doLogin',
           payload: {
@@ -114,10 +120,9 @@ const Model: LoginModelType = {
             user_id,
             rememberMe,
             // currentEnterprise: enterprise,
-          }
+          },
         });
-
-      } else if(status === 404) {
+      } else if (status === 404) {
         // notify.warning('不存在该账户');
         message.error('不存在该账户');
       } else {
@@ -152,9 +157,6 @@ const Model: LoginModelType = {
       // }
     },
 
-
-
-
     *autoLogin({ payload }, { call, put }) {
       // load authorization signature from session
       const authSignature = getAuthHashFromSession();
@@ -171,12 +173,8 @@ const Model: LoginModelType = {
       // load authorization
       const authorization = getAuthorization();
       // const currentEnterprise = getCurrentEnterprise();
-      
-      const {
-        token,
-        authority,
-        uid: user_id,
-      } = authorization;
+
+      const { token, authority, uid: user_id } = authorization;
       // const enterprise = yield call(findCurrentEnterprise, user_id);
       yield put({
         type: 'doLogin',
@@ -185,7 +183,7 @@ const Model: LoginModelType = {
           authority,
           user_id,
           // currentEnterprise: enterprise,
-        }
+        },
       });
     },
 
@@ -198,7 +196,7 @@ const Model: LoginModelType = {
         user_id,
         rememberMe,
         // currentEnterprise,
-      } = (payload as StateType);
+      } = payload as StateType;
 
       const ok = !!user_id;
       yield put({
@@ -216,7 +214,10 @@ const Model: LoginModelType = {
         // reloadAuthorized();
         reloadAuthorization();
 
-        const { enterprise: currentEnterprise, enterprises } = yield call(findCurrentEnterprise, user_id);
+        const { enterprise: currentEnterprise, enterprises } = yield call(
+          findCurrentEnterprise,
+          user_id,
+        );
 
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
@@ -233,7 +234,7 @@ const Model: LoginModelType = {
             return;
           }
         }
-        
+
         yield put({
           type: 'setting/resetFingerprint',
           payload: user_id,
@@ -253,7 +254,6 @@ const Model: LoginModelType = {
         //   payload: enterprises || [],
         // });
 
-
         yield put({
           type: 'user/fetchAfterLogin',
           payload: {
@@ -269,16 +269,21 @@ const Model: LoginModelType = {
       // yield call(getFakeCaptcha, payload);
     },
 
-    *logout(_, { put }) {
+    *logout({ noRedirect = false }, { put }) {
       const { redirect } = getPageQuery();
+      clearAuthorization();
+      clearRememberMe();
+
       // redirect
       if (window.location.pathname !== '/user/login' && !redirect) {
         yield put(
           routerRedux.replace({
             pathname: '/user/login',
-            search: stringify({
-              redirect: window.location.href,
-            }),
+            search: noRedirect
+              ? undefined
+              : stringify({
+                  redirect: window.location.href,
+                }),
           }),
         );
       }
@@ -300,9 +305,8 @@ const Model: LoginModelType = {
         authority: payload.currentAuthority || 'guest',
         token: payload.token,
         uid: payload.user_id,
-      }
-      
-      
+      };
+
       setAuthorization(auth);
 
       if (rememberMe) {

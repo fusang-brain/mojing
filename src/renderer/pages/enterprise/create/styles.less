@@ -3,12 +3,106 @@
 .wrapper {
   width: 100%;
   height: 100%;
-  
 }
 
-.main {
-  // width: 100%;
-  height: 100% !important;
-  margin: 0 !important;
-  max-width: unset !important;
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+
+  .title {
+    display: flex;
+    flex: 1;
+    align-items: center;
+  }
+
+  .action {
+    width: 64px;
+  }
+}
+
+.stepContainer {
+  width: 90%;
+  height: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .steps {
+    width: 100%;
+  }
+
+  .stepContent {
+    margin-top: 45px;
+    width: 100%;
+
+    .title {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 46px;
+    }
+  }
+}
+
+.baseInfo {
+  width: 100%;
+  margin: 12px;
+}
+
+.formInfo {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .footer {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .selectButtons {
+    width: 100%;
+    height: 200px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    .button {
+      width: 150px;
+      height: 100px;
+      margin-right: 12px;
+      border: 1px solid @border-color-base;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transition: all 300ms;
+      border-radius: 3px;
+      cursor: pointer;
+
+      .pointer {
+        cursor: pointer;
+      }
+
+      &:hover {
+        box-shadow: 0px 3px 5px @border-color-base;
+      }
+
+      &.selected {
+        box-shadow: 0px 3px 5px @border-color-base;
+      }
+
+      &:last-child {
+        margin-right: 0px;
+      }
+    }
+  }
 }

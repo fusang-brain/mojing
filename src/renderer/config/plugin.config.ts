@@ -90,7 +90,12 @@ export default (config: any) => {
       },
     });
 
-  config.target("electron-renderer");
+  config.target('electron-renderer');
+  if (!config.alias) {
+    config.alias = {};
+  }
+
+  // config.alias['@/'] = path.resolve(__dirname, '../');
 };
 
 const getAntdSerials = (color: string) => {
