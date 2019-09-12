@@ -1,0 +1,32 @@
+@icon-font-size: 20px;
+
+.collapsedButton {
+  float: left;
+  width: 32px;
+  height: 32px;
+  transform: translateY(calc(~'100vh - 80px'));
+
+  & > button {
+    float: left;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+}
+
+:global {
+  .ant-menu-inline-collapsed {
+    & > .ant-menu-item .anticon,
+    .ant-menu-submenu .anticon {
+      font-size: @icon-font-size;
+    }
+
+    & > .ant-menu-submenu > .ant-menu-submenu-title .anticon {
+      font-size: @icon-font-size;
+    }
+  }
+
+  .ant-menu-item .anticon,
+  .ant-menu-submenu-title .anticon {
+    font-size: 16px;
+  }
+}

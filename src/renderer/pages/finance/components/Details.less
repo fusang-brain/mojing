@@ -1,0 +1,49 @@
+@import '../../../components/Theme/vars.less';
+
+.query {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  height: 45px;
+}
+
+.totalPanel {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+
+  & .box {
+    height: 100%;
+    width: 90px;
+    background-color: @component-background;
+    display: flex;
+    flex-direction: column;
+    margin-right: 1px;
+    padding: 4px 0;
+
+    &.income {
+      color: @green-4;
+    }
+
+    &.total {
+      color: @blue-4;
+    }
+
+    &.out {
+      color: @red-4;
+    }
+
+    .label {
+      align-self: center;
+      font-size: 14px;
+    }
+
+    .content {
+      font-size: 14px;
+      align-self: center;
+    }
+  }
+}

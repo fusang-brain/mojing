@@ -1,0 +1,63 @@
+@import '~antd/es/style/themes/default.less';
+
+.root {
+  margin-top: 5px;
+  border: 1px solid @border-color-split;
+  box-shadow: 'unset';
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  // height: ~'calc((100% - 20px))';
+  height: 100%;
+  padding: 1px;
+
+  .gridContent {
+    width: 100%;
+    min-height: 100px;
+    flex: 1;
+
+    :global(.panel) {
+      margin-bottom: 0;
+    }
+  }
+
+  // :global(td) {
+  //   background-color: @table-header-bg !important;
+  //   // border-right: unset !important;
+  //   // border-left: unset !important;
+  // }
+
+  // :global(th) {
+  //   background-color: @table-header-bg !important;
+
+  //   & div {
+  //     background-color: unset;
+  //   }
+  //   // border-right: 1px solid @border-color-base !important;
+  //   // border-left: 1px solid @border-color-base !important;
+  // }
+}
+
+.scrollable {
+  overflow: auto;
+}
+
+.loading {
+  position: relative;
+  float: left;
+  z-index: 1000;
+  height: 50%;
+  width: 100%;
+  left: 0;
+  height: ~'calc((100% - 64px))';
+  top: 0;
+  transform: translateY(calc(~'-100% - 64px'));
+  background: rgba(0, 0, 0, 0.2);
+  -webkit-filter: blur(2px);
+  filter: blur(2px);
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
