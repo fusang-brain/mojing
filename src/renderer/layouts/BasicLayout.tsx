@@ -103,7 +103,7 @@ const collapsedButtonRender: BasicLayoutProps['collapsedButtonRender'] = collaps
 };
 
 const footerRender: BasicLayoutProps['footerRender'] = (_, defaultDom) => {
-  console.log(defaultDom, 'defaultDom');
+  // console.log(defaultDom, 'defaultDom');
   // if (!isAntDesignPro()) {
   //   return defaultDom;
   // }

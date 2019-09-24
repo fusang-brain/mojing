@@ -76,14 +76,17 @@ export type PowerPartial<T> = {
 
 export function genOrderNO(prefix?: string): string {
   const t = new Date();
-  return lodash.uniqueId(`${prefix}${t.getTime()}`);
+  const head = `${prefix || ''}`;
+  const body = t.getTime() * 100000;
+  const uniqueBody = Number(body) + Number(lodash.uniqueId() || 0);
+  return `${head}${uniqueBody}`;
 }
 
 export function genProductCode(prefix?: string): string {
   const t = new Date();
   const head = `PD${prefix || ''}`;
   const body = t.getTime() * 100000;
-  const uniqueBody = body + lodash.uniqueId();
+  const uniqueBody = Number(body) + Number(lodash.uniqueId() || 0);
   return `${head}${uniqueBody}`;
 }
 
@@ -96,6 +99,16 @@ export function genProductCode(prefix?: string): string {
 
 //   return true;
 // }
+
+export const genGenderString = (key: string) => {
+  const mapper = {
+    man: '男',
+    female: '女',
+    unknown: '未知',
+  };
+
+  return mapper[key] || '未知';
+};
 
 export const dispatch: (action: AnyAction) => Promise<any> = action => {
   const gApp = window['g_app'];

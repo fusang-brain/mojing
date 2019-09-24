@@ -84,10 +84,10 @@ export function getAuthority(str?: string): string | string[] {
     authority = authorityString;
   }
   if (typeof authority === 'string') {
-    console.log(authority, 'authority ===');
+    // console.log(authority, 'authority ===');
     return [authority];
   }
-  console.log(authority, 'authority ===');
+  // console.log(authority, 'authority ===');
   return authority;
 }
 

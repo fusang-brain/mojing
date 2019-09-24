@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Drawer, Button, Typography, Steps, Form, Empty, Input, Modal } from 'antd';
 // import Grid from 'antd/lib/card/Grid';
 import styles from './styles.less';
-import { BaseProps, ConnectState } from '@/models/connect';
+import { BaseProps, ConnectState, TheDispatch } from '@/models/connect';
 import { FormProps } from 'antd/lib/form';
 import TextArea from 'antd/es/input/TextArea';
 import classnames from 'classnames';
@@ -140,11 +140,12 @@ class CreateEnterprise extends Component<CreateEnterpriseProps, CreateEnterprise
   };
 
   handleLogout = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
-    const { dispatch } = this.props;
-    Modal.warning({
+    const { dispatch = {} as TheDispatch } = this.props;
+    Modal.confirm({
       title: '登出账户',
       content: '您是否要登出您当前登录的账户?',
       okText: '确定',
+      cancelText: '取消',
       onOk: () => {
         dispatch({
           type: 'login/logout',

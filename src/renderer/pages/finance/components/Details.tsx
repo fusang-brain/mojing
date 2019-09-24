@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import StandardTableCard from '@/components/DataTable/StandardTableCard';
 import styles from './Details.less';
-import { DatePicker, Tag } from 'antd';
+import { DatePicker, Tag, Modal } from 'antd';
 import classNames from 'classnames';
 import { BaseProps, ConnectState, TheDispatch } from '@/models/connect';
 import { connect } from 'dva';
@@ -12,6 +12,7 @@ import * as colors from '@ant-design/colors';
 import moment, { Moment } from 'moment';
 import Button from 'antd/es/button';
 import { getLabelByValue } from './Categories';
+import { ComponentsError } from '@/components/Exception/utils';
 
 interface DetailsProps extends BaseProps, BaseProps {
   finance?: ConnectState['finance'];
@@ -91,12 +92,12 @@ class Details extends PureComponent<DetailsProps, DetailsState> {
         dataIndex: 'action',
         title: '操作',
         align: 'left',
-        render: (_, record) => {
+        render: (_, record: any) => {
           return (
             // <IconButton color="secondary" >
             //   <Delete />
             // </IconButton>
-            <Button icon="delete" type="danger" />
+            <Button icon="delete" onClick={this.handleDelete(record._id)} type="danger" />
             // <AlertDialogButton
             //   title="是否要删除该记录?"
             //   content="本次删除操作将是不可逆的，删除后的信息将无法恢复，请确认您是否要进行本次删除。"
@@ -132,6 +133,28 @@ class Details extends PureComponent<DetailsProps, DetailsState> {
       outTotal,
     };
   }
+
+  handleDelete = (id: string) => () => {
+    const { dispatch } = this.props;
+
+    if (!dispatch) {
+      ComponentsError();
+      return;
+    }
+
+    Modal.confirm({
+      title: '是否删除？',
+      content: '本次删除将无法恢复，是否要删除该账目',
+      onOk: () => {
+        return dispatch({
+          type: 'finance/deleteOne',
+          payload: id,
+        });
+      },
+      okText: '删除',
+      cancelText: '取消',
+    });
+  };
 
   handleDateChange = (date: Moment | null, dateString: string) => {
     if (!date) {
@@ -224,7 +247,9 @@ class Details extends PureComponent<DetailsProps, DetailsState> {
         <DataTable
           columns={this.tableColumns}
           rows={listDetails.list}
+          disableToolbar
           toolbar={false}
+          fixedColumnsLeft={['kind', 'category']}
           fixedColumnsRight={['action']}
           loading={loading.effects['finance/loadList']}
           paginationConfig={{

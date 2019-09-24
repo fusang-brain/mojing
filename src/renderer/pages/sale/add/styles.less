@@ -1,0 +1,76 @@
+.container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .pane {
+    width: 100%;
+    flex: 1;
+    min-height: 200px;
+    display: flex;
+    flex-direction: row;
+
+    .mainPane {
+      min-width: 200px;
+      height: 100%;
+      flex: 1;
+
+      display: flex;
+      flex-direction: column;
+
+      .title {
+        width: 100%;
+        height: 45px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+      }
+
+      .form {
+        width: 100%;
+        height: 64px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+      }
+
+      .content {
+        flex: 1;
+        min-height: 200px;
+      }
+    }
+
+    .productListPane {
+      width: 370px;
+      height: 100%;
+    }
+  }
+
+  .footer {
+    width: 100%;
+    height: 64px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    .left {
+      height: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .right {
+      height: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+}

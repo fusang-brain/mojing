@@ -1,0 +1,80 @@
+.orderPane {
+  width: 600px;
+  margin: 0 auto;
+}
+
+.upgradeItemsPane {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .body {
+    flex: 1;
+    width: 100%;
+    min-height: 200px;
+    display: flex;
+    flex-direction: row;
+
+    .productList {
+      width: 400px;
+      height: 100%;
+    }
+
+    .content {
+      flex: 1;
+      min-width: 200px;
+      padding: 0 24px;
+    }
+  }
+
+  .footer {
+    height: 64px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.checkItemsTable {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .body {
+    flex: 1;
+    width: 100%;
+    min-height: 200px;
+    display: flex;
+    flex-direction: row;
+
+    .content {
+      flex: 1;
+      width: 100%;
+      height: 100%;
+      padding: 0 24px;
+    }
+  }
+
+  .footer {
+    height: 64px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.modal {
+  :global(.ant-input[disabled]) {
+    color: #fff !important;
+  }
+}

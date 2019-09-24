@@ -1,0 +1,73 @@
+@import '../../../components/Theme/vars.less';
+
+.container {
+  :global(.ant-drawer-wrapper-body) {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    :global(.ant-drawer-body) {
+      flex: 1;
+      min-height: 200px;
+      padding: 18px 18px 0 18px;
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  :global(.ant-input[disabled]) {
+    color: #fff;
+  }
+
+  .footer {
+    height: 64px;
+    border-top: 1px solid @border-color-split;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+
+    & button {
+      margin-right: 8px;
+    }
+  }
+  .content {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    min-height: 200px;
+    overflow: auto;
+
+    .info {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      width: 100%;
+
+      .card {
+        height: 100%;
+        width: 100%;
+        overflow: auto;
+        padding: 8px;
+      }
+
+      .subTitle {
+        font-size: 16px;
+        font-weight: bold;
+      }
+
+      .baseInfo {
+        flex: 1;
+        width: 100%;
+      }
+
+      .saleInfo {
+        flex: 1;
+        width: 100%;
+      }
+    }
+  }
+}

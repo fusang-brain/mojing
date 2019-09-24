@@ -4,6 +4,7 @@ import { Subscription, Effect } from 'dva';
 import { NoticeIconData } from '@/components/NoticeIcon';
 // import { queryNotices } from '@/services/user';
 import { ConnectState } from './connect.d';
+import { findOperators } from '@/services/user';
 
 export interface NoticeItem extends NoticeIconData {
   id: string;
@@ -11,9 +12,15 @@ export interface NoticeItem extends NoticeIconData {
   status: string;
 }
 
+export interface Operator {
+  _id: string;
+  realname: string;
+}
+
 export interface GlobalModelState {
   collapsed: boolean;
   notices: NoticeItem[];
+  operators: Operator[];
 }
 
 export interface GlobalModelType {
@@ -23,11 +30,13 @@ export interface GlobalModelType {
     fetchNotices: Effect;
     clearNotices: Effect;
     changeNoticeReadState: Effect;
+    loadOperators: Effect;
   };
   reducers: {
     changeLayoutCollapsed: Reducer<GlobalModelState>;
     saveNotices: Reducer<GlobalModelState>;
     saveClearedNotices: Reducer<GlobalModelState>;
+    saveOperators: Reducer<GlobalModelState>;
   };
   subscriptions: { setup: Subscription };
 }
@@ -38,6 +47,7 @@ const GlobalModel: GlobalModelType = {
   state: {
     collapsed: false,
     notices: [],
+    operators: [],
   },
 
   effects: {
@@ -58,6 +68,20 @@ const GlobalModel: GlobalModelType = {
       //   },
       // });
     },
+
+    *loadOperators(action, effects) {
+      const { select, call, put } = effects;
+      const enterprise = yield select((s: ConnectState) => s.user.currentEnterprise);
+      const resp = yield call(findOperators, enterprise);
+
+      const { data } = resp;
+
+      yield put({
+        type: 'saveOperators',
+        payload: data,
+      });
+    },
+
     *clearNotices({ payload }, { put, select }) {
       yield put({
         type: 'saveClearedNotices',
@@ -102,24 +126,40 @@ const GlobalModel: GlobalModelType = {
   },
 
   reducers: {
-    changeLayoutCollapsed(state = { notices: [], collapsed: true }, { payload }): GlobalModelState {
+    changeLayoutCollapsed(state, { payload }): GlobalModelState {
       return {
+        operators: [],
+        notices: [],
         ...state,
         collapsed: payload,
       };
     },
     saveNotices(state, { payload }): GlobalModelState {
       return {
+        operators: [],
         collapsed: false,
         ...state,
         notices: payload,
       };
     },
-    saveClearedNotices(state = { notices: [], collapsed: true }, { payload }): GlobalModelState {
+    saveClearedNotices(
+      state = { notices: [], collapsed: true, operators: [] },
+      { payload },
+    ): GlobalModelState {
       return {
         collapsed: false,
         ...state,
         notices: state.notices.filter((item): boolean => item.type !== payload),
+      };
+    },
+
+    saveOperators(
+      state = { notices: [], collapsed: true, operators: [] },
+      { payload },
+    ): GlobalModelState {
+      return {
+        ...state,
+        operators: payload,
       };
     },
   },

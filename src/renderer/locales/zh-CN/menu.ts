@@ -1,5 +1,5 @@
 export default {
-  'menu.welcome': '首页',
+  'menu.welcome': '欢迎',
   'menu.more-blocks': '更多区块',
   'menu.home': '首页',
 
@@ -16,6 +16,9 @@ export default {
   'menu.enterprise.create': '创建企业',
 
   'menu.finance': '财务管理',
+  'menu.sale': '销售管理',
+  'menu.sale.add': '销售',
+  'menu.sale.query': '销售记录',
   'menu.member': '会员管理',
   'menu.setting': '设置中心',
 

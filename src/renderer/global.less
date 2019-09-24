@@ -61,12 +61,39 @@ ol {
   }
 
   ::-webkit-scrollbar {
-    width: 6px !important;
-    height: 8px !important;
+    width: 10px !important;
+    height: 12px !important;
   }
 
+  ::-webkit-scrollbar-corner {
+    background: rgba(0, 0, 0, 0.25);
+  }
+
+  // 修复日历在黑暗模式下的文字显示bug
   .ant-calendar-selected-day .ant-calendar-date {
     color: #000;
+  }
+
+  // 修复 inputNumber 组件 文字在黑暗模式下的显示bug
+  .ant-input-number-input {
+    color: #fff;
+  }
+
+  .mj-drawer {
+    .ant-drawer-wrapper-body {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+
+      .ant-drawer-body {
+        flex: 1;
+        min-height: 200px;
+        padding: 18px 18px 0 18px;
+        display: flex;
+        flex-direction: column;
+      }
+    }
   }
 
   .ant-layout-content {

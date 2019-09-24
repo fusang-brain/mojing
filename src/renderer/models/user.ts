@@ -5,7 +5,6 @@ import { findUserInfo } from '@/services/user';
 import { isStateSuccess } from '@/utils/request';
 import { getCurrentEnterprise, setCurrentEnterprise } from '@/services/enterprise';
 import { ConnectState } from './connect';
-import { routerRedux } from 'dva/router';
 
 // import { queryCurrent, query as queryUsers } from '@/services/user';
 
@@ -50,25 +49,10 @@ const UserModel: UserModelType = {
   },
 
   effects: {
-    *fetch(_, { call, put }) {
-      // console.log('fetch user');
-      // const response = yield call(queryUsers);
-      // console.log(response);
-      // yield put({
-      //   type: 'save',
-      //   payload: {
-      //     status: 'ok',
-      //     type: 'mobile',
-      //     currentAuthority: 'user',
-      //   },
-      // });
-      // yield put({
-      //   type: 'fetchCurrent',
-      // });
-    },
+    *fetch(_, { call, put }) {},
     *fetchAfterLogin(action, { call, put, take }) {
-      const { payload } = action;
-      const { redirect } = payload;
+      // const { payload } = action;
+      // const { redirect } = payload;
 
       yield put({
         type: 'fetchCurrent',
@@ -77,12 +61,12 @@ const UserModel: UserModelType = {
       yield put({
         type: 'fetchCurrentEnterprise',
       });
+      yield take('fetchCurrentEnterprise/@@end');
 
-      yield put(routerRedux.replace(redirect || '/'));
+      return true;
     },
-    *fetchCurrent(_, { call, put, take }) {
-      console.log('fetch current');
 
+    *fetchCurrent(_, { call, put, take }) {
       const resp: AxiosResponse = yield call(findUserInfo);
 
       if (!isStateSuccess(resp)) {
@@ -90,20 +74,6 @@ const UserModel: UserModelType = {
       }
 
       const { info } = resp.data;
-      const { enterprises } = info;
-
-      if (enterprises.length <= 0) {
-        yield put({
-          type: 'saveCurrentUser',
-          payload: info,
-        });
-
-        yield take('saveCurrentUser/@@end');
-
-        yield put(routerRedux.replace('/enterprise/create'));
-
-        return false;
-      }
 
       return yield put({
         type: 'saveCurrentUser',
@@ -112,16 +82,30 @@ const UserModel: UserModelType = {
     },
 
     *fetchCurrentEnterprise(_, { call, put, select }) {
-      console.log('fetch current enterprise');
-      // const { put, call, select } = effects;
       const user = yield select((s: ConnectState) => s.user.currentUser);
       const { enterprises = [] } = user;
+      let enterprise: string = '';
+      const cachedEnterprise: string = getCurrentEnterprise();
 
-      let enterprise: string = yield call(getCurrentEnterprise);
-
-      if (!enterprise || enterprise === undefined) {
-        enterprise = enterprises[0];
+      if (enterprises && enterprises.length > 0) {
+        if (enterprises.indexOf(cachedEnterprise) >= 0) {
+          enterprise = cachedEnterprise;
+        } else {
+          enterprise = enterprises[0]._id;
+        }
       }
+
+      yield put({
+        type: 'enterprise/loadEnterpriseDetailsById',
+        payload: {
+          id: enterprise || '',
+        },
+      });
+
+      yield put({
+        type: 'enterprise/saveEnterpriseList',
+        payload: enterprises || [],
+      });
 
       return yield put({
         type: 'saveCurrentEnterprise',

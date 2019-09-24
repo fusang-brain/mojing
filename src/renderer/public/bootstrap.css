@@ -1,4 +1,4 @@
-@import url("https://fonts.lug.ustc.edu.cn/css?family=Lato:400,700,400italic");
+/* @import url("https://fonts.lug.ustc.edu.cn/css?family=Lato:400,700,400italic"); */
 /*!
  * bootswatch v3.4.1
  * Homepage: http://bootswatch.com
@@ -1212,7 +1212,8 @@ h6 .small,
   line-height: 1;
   color: #999999;
 }
-h1,
+
+/* h1,
 .h1,
 h2,
 .h2,
@@ -1220,7 +1221,8 @@ h3,
 .h3 {
   margin-top: 21px;
   margin-bottom: 10.5px;
-}
+} */
+
 h1 small,
 .h1 small,
 h2 small,
@@ -1235,6 +1237,7 @@ h3 .small,
 .h3 .small {
   font-size: 65%;
 }
+/* 
 h4,
 .h4,
 h5,
@@ -1243,7 +1246,9 @@ h6,
 .h6 {
   margin-top: 10.5px;
   margin-bottom: 10.5px;
-}
+  
+} */
+
 h4 small,
 .h4 small,
 h5 small,

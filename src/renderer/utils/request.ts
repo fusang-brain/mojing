@@ -11,8 +11,7 @@ import { getAccessToken } from './Authorized';
 import { message } from 'antd';
 // import { notify as message } from '@/components/Notifier';
 
-
-const codeMessage: {[key: number]: string} = {
+const codeMessage: { [key: number]: string } = {
   200: '服务器成功返回请求的数据。',
   201: '新建或修改数据成功。',
   202: '一个请求已经进入后台排队（异步任务）。',
@@ -41,22 +40,22 @@ const checkStatus = (response: AxiosResponse) => {
   // });
   // message.error(`请求错误 ${response.status}: ${response.config.url}`);
   const error = new Error(errortext);
-  
+
   // error.name = response.status;
   throw error;
-}
+};
 
 const saveCache = (response: AxiosResponse, hashcode: string) => {
   const stringResp = JSON.stringify(response);
   sessionStorage.setItem(hashcode, stringResp);
   sessionStorage.setItem(`${hashcode}:timestamp`, String(Date.now()));
-}
+};
 
 export interface IRequestOptions extends AxiosRequestConfig {
-  expirys?:boolean|number;
+  expirys?: boolean | number;
 }
 
-export default async function request(url: string, opt:IRequestOptions) {
+export default async function request(url: string, opt: IRequestOptions) {
   if (!url.startsWith('http://')) {
     // console.log(config.apiHost, 'apiHost ...');
     url = `${config.apiHost}${join('/', url)}`;
@@ -68,7 +67,7 @@ export default async function request(url: string, opt:IRequestOptions) {
     method: 'get',
     headers: {},
     withCredentials: true, // 请求时带上 cookie
-  }
+  };
 
   const options: IRequestOptions = { ...defaultOptions, ...opt };
   // inject accesstoken
@@ -86,9 +85,8 @@ export default async function request(url: string, opt:IRequestOptions) {
    * Produce fingerprints based on url and parameters
    * Maybe url has the same parameters
    */
-  const fingerprint = url 
-    + (options.params ? JSON.stringify(options.params) : '');
-    + (options.data ? JSON.stringify(options.data) : '');
+  const fingerprint = url + (options.params ? JSON.stringify(options.params) : '');
+  +(options.data ? JSON.stringify(options.data) : '');
 
   const hashcode = hash
     .sha256()
@@ -96,7 +94,6 @@ export default async function request(url: string, opt:IRequestOptions) {
     .digest('hex');
 
   const { expirys = 60, method, url: reqUrl, ...axiosProps } = options;
-
 
   // options expirys !== false, return cache
   if (options.expirys !== false) {
@@ -119,22 +116,21 @@ export default async function request(url: string, opt:IRequestOptions) {
       url,
       ...axiosProps,
     });
-  
+
     checkStatus(resp);
     saveCache(resp, hashcode);
     return resp;
   } catch (e) {
-    console.log(e, 'errr');
+    // console.log(e, 'errr');
 
     const { response } = e;
 
     if (!response) {
       throw e;
     }
-    
+
     const { data, status } = response;
     if (status === 401) {
-
       const { error } = data;
 
       if (error === 'not found the user') {
@@ -180,12 +176,11 @@ export default async function request(url: string, opt:IRequestOptions) {
     // throw response;
     return response;
   }
-
 }
 
 export function isStateSuccess(resp: AxiosResponse) {
   const { status } = resp;
-  
+
   if (parseInt(`${status / 100}`, 10) === 2) {
     return true;
   }

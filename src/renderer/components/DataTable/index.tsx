@@ -16,7 +16,7 @@ import TableToolbar from './TableToolbar';
 import classNames from 'classnames';
 // import AutoSizer from 'react-virtualized-auto-sizer';
 import styles from './index.less';
-import { Typography, Icon, Spin, Row } from 'antd';
+import { Typography, Spin } from 'antd';
 import TableRow from './TableRow';
 import TableHeaderCell from './TableHeaderCell';
 // import { genFingerprint } from "./_utils";
@@ -24,9 +24,10 @@ import TableHeaderCell from './TableHeaderCell';
 import { genFingerprint, getRowID } from './_utils';
 import { SpinProps } from 'antd/lib/spin';
 import { isBrowser } from '@/utils/utils';
+import MJIcon from '../MJIcon';
 
 const Loading = (props: SpinProps & { children?: any }) => {
-  const antIcon = <Icon type="loading" style={{ fontSize: 45 }} spin />;
+  const antIcon = <MJIcon type="icon-Loading" style={{ fontSize: 45 }} spin />;
   return (
     <div className={styles.loading}>
       <Spin {...props} indicator={antIcon} size="large" delay={600}>
@@ -37,7 +38,7 @@ const Loading = (props: SpinProps & { children?: any }) => {
 };
 
 const LoadingFirst = (props: SpinProps & { children?: any }) => {
-  const antIcon = <Icon type="loading" style={{ fontSize: 45 }} spin />;
+  const antIcon = <MJIcon type="icon-Loading" style={{ fontSize: 45 }} spin />;
   const theStyle = {
     height: '100%',
     display: 'flex',
@@ -288,10 +289,9 @@ class DataTable<T> extends PureComponent<DataTableProps<T>, DataTableState<T>> {
           <div
             style={{
               width: '100%',
-              padding: '10px',
             }}
           >
-            <Typography.Title level={3}>{title}</Typography.Title>
+            <Typography.Title level={4}>{title}</Typography.Title>
           </div>
         )}
 

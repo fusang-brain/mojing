@@ -10,6 +10,7 @@ import { AxiosResponse } from 'axios';
 import { IQueryState, ModelType, ConnectState } from '@/models/connect';
 import { listDetailsBuild } from '@/services/_utils/helper';
 import { message } from 'antd';
+import { isStateSuccess } from '@/utils/request';
 
 export interface IFinanceItem {}
 
@@ -61,7 +62,7 @@ export default {
 
       const { data } = resp;
 
-      if (data) {
+      if (data && isStateSuccess(resp)) {
         message.success('记账成功');
         yield put({
           type: 'loadList',
@@ -79,7 +80,11 @@ export default {
             date: queries.date || moment().toISOString(),
           },
         });
+
+        return true;
       }
+
+      return false;
     },
 
     *deleteOne({ payload }, { call, put, select }) {
@@ -101,7 +106,11 @@ export default {
             date: queries.date || moment().toISOString(),
           },
         });
+
+        return true;
       }
+
+      return false;
     },
 
     *loadStatistic({ payload }, { call, put, select }) {

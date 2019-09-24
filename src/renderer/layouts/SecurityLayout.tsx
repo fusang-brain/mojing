@@ -7,6 +7,7 @@ import PageLoading from '@/components/PageLoading';
 
 interface SecurityLayoutProps extends ConnectProps {
   loading: boolean;
+  currentEnterprise: string;
   currentUser: CurrentUser;
 }
 
@@ -20,34 +21,39 @@ class SecurityLayout extends React.Component<SecurityLayoutProps, SecurityLayout
   };
 
   componentDidMount() {
-    this.setState({
-      isReady: true,
-    });
     const { dispatch } = this.props;
     if (dispatch) {
-      // dispatch({
-      //   type: 'user/fetchCurrent',
-      // });
-      // dispatch({
-      //   type: 'user/fetchCurrent',
-      // });
+      dispatch({
+        type: 'user/fetchAfterLogin',
+      }).then(() => {
+        this.setState({
+          isReady: true,
+        });
+      });
     }
   }
 
   render() {
     const { isReady } = this.state;
-    const { children, loading, currentUser } = this.props;
-    if ((!currentUser.id && loading) || !isReady) {
+    const { children, loading, currentUser, currentEnterprise } = this.props;
+    // const { enterprises = [] } = currentUser;
+    if (loading || !isReady) {
       return <PageLoading />;
+    }
+
+    if (!currentEnterprise) {
+      return <Redirect to="/enterprise/create"></Redirect>;
     }
     if (!currentUser.id) {
       return <Redirect to="/user/login"></Redirect>;
     }
+
     return children;
   }
 }
 
 export default connect(({ user, loading }: ConnectState) => ({
   currentUser: user.currentUser,
+  currentEnterprise: user.currentEnterprise,
   loading: loading.models.user,
 }))(SecurityLayout);

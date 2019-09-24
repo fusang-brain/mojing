@@ -13,6 +13,18 @@ export default [
     ],
   },
   {
+    path: '/enterprise/',
+    name: 'enterprise',
+    component: '../layouts/BlankLayout',
+    routes: [
+      {
+        path: '/enterprise/create',
+        name: 'create',
+        component: './enterprise/create',
+      },
+    ],
+  },
+  {
     path: '/',
     component: '../layouts/SecurityLayout',
     routes: [
@@ -31,20 +43,7 @@ export default [
             icon: 'icon-home',
             component: './Welcome',
           },
-          {
-            path: '/enterprise/',
-            name: 'enterprise',
-            exact: false,
-            hideInMenu: true,
-            routes: [
-              {
-                path: '/enterprise/create',
-                name: 'create',
-                icon: 'block',
-                component: './enterprise/create',
-              },
-            ],
-          },
+
           {
             path: '/product/',
             name: 'product',
@@ -104,6 +103,26 @@ export default [
             exact: false,
             icon: 'icon-member',
             component: './member',
+          },
+          {
+            path: '/sale',
+            name: 'sale',
+            exact: false,
+            icon: 'icon-shopping',
+            routes: [
+              {
+                path: '/sale/add',
+                name: 'add',
+                icon: 'icon-touch',
+                component: './sale/add',
+              },
+              {
+                path: '/sale/query',
+                name: 'query',
+                icon: 'icon-touch',
+                component: './sale/query',
+              },
+            ],
           },
           {
             path: '/setting',

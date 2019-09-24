@@ -15,37 +15,39 @@ import {
 } from '@/utils/Authorized';
 import { getPageQuery } from '@/utils/utils';
 
-import { getEnterpriseByUserID, getCurrentEnterprise } from '@/services/enterprise';
+import { setCurrentEnterprise } from '@/services/enterprise';
 import { AxiosResponse } from 'axios';
 import { ModelType } from './connect';
 import { message } from 'antd';
+import { ServiceRequest } from '@/services';
+// import { router } from 'umi';
 
-async function findCurrentEnterprise(id: string) {
-  const resp: AxiosResponse = await getEnterpriseByUserID(id);
+// async function findCurrentEnterprise(id: string) {
+//   const resp: AxiosResponse = await getEnterpriseByUserID(id);
 
-  const { data } = resp;
+//   const { data } = resp;
 
-  const { list: enterprises } = data;
+//   const { list: enterprises } = data;
 
-  let enterprise: string = '';
+//   let enterprise: string = '';
 
-  const cachedEnterprise = getCurrentEnterprise();
+//   const cachedEnterprise = getCurrentEnterprise();
 
-  // console.log(cachedEnterprise, 'cachedEnterprise');
+//   // console.log(cachedEnterprise, 'cachedEnterprise');
 
-  if (enterprises && enterprises.length > 0) {
-    if (enterprises.indexOf(cachedEnterprise) >= 0) {
-      enterprise = cachedEnterprise;
-    } else {
-      enterprise = enterprises[0]._id;
-    }
-  }
+//   if (enterprises && enterprises.length > 0) {
+//     if (enterprises.indexOf(cachedEnterprise) >= 0) {
+//       enterprise = cachedEnterprise;
+//     } else {
+//       enterprise = enterprises[0]._id;
+//     }
+//   }
 
-  return {
-    enterprise,
-    enterprises: enterprises,
-  };
-}
+//   return {
+//     enterprise,
+//     enterprises: enterprises,
+//   };
+// }
 
 export interface StateType {
   status?: 'ok' | 'error';
@@ -129,32 +131,6 @@ const Model: LoginModelType = {
         // notify.error('您的账号或密码错误');
         message.error('您的账号或密码错误');
       }
-
-      // yield put(routerRedux.replace('/'));
-      // const response = yield call(fakeAccountLogin, payload);
-      // yield put({
-      //   type: 'changeLoginStatus',
-      //   payload: response,
-      // });
-      // // Login successfully
-      // if (response.status === 'ok') {
-      //   const urlParams = new URL(window.location.href);
-      //   const params = getPageQuery();
-      //   let { redirect } = params as { redirect: string };
-      //   if (redirect) {
-      //     const redirectUrlParams = new URL(redirect);
-      //     if (redirectUrlParams.origin === urlParams.origin) {
-      //       redirect = redirect.substr(urlParams.origin.length);
-      //       if (redirect.match(/^\/.*#/)) {
-      //         redirect = redirect.substr(redirect.indexOf('#') + 1);
-      //       }
-      //     } else {
-      //       window.location.href = redirect;
-      //       return;
-      //     }
-      //   }
-      //   yield put(routerRedux.replace(redirect || '/'));
-      // }
     },
 
     *autoLogin({ payload }, { call, put }) {
@@ -176,6 +152,7 @@ const Model: LoginModelType = {
 
       const { token, authority, uid: user_id } = authorization;
       // const enterprise = yield call(findCurrentEnterprise, user_id);
+      console.log('自动登录');
       yield put({
         type: 'doLogin',
         payload: {
@@ -189,7 +166,7 @@ const Model: LoginModelType = {
 
     // 执行统一登录操作
     *doLogin({ payload }, { call, put }) {
-      console.log('doLogin');
+      // console.log('doLogin');
       const {
         token,
         authority,
@@ -214,13 +191,17 @@ const Model: LoginModelType = {
         // reloadAuthorized();
         reloadAuthorization();
 
-        const { enterprise: currentEnterprise, enterprises } = yield call(
-          findCurrentEnterprise,
-          user_id,
-        );
-
+        // const { enterprise: currentEnterprise, enterprises } = yield call(
+        //   findCurrentEnterprise,
+        //   user_id,
+        // );
+        yield put({
+          type: 'setting/resetFingerprint',
+          payload: user_id,
+        });
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
+
         let { redirect } = params as { redirect: string };
         if (redirect) {
           const redirectUrlParams = new URL(redirect);
@@ -234,32 +215,8 @@ const Model: LoginModelType = {
             return;
           }
         }
-
-        yield put({
-          type: 'setting/resetFingerprint',
-          payload: user_id,
-        });
-
-        console.log('will load enterprise', currentEnterprise);
-        // yield put({
-        //   type: 'enterprise/loadEnterpriseDetailsById',
-        //   payload: {
-        //     id: currentEnterprise || '',
-        //   }
-        // });
-
-        console.log('will save enterprises', enterprises);
-        // yield put({
-        //   type: 'enterprise/saveEnterpriseList',
-        //   payload: enterprises || [],
-        // });
-
-        yield put({
-          type: 'user/fetchAfterLogin',
-          payload: {
-            redirect,
-          },
-        });
+        console.log('统一登录', redirect);
+        yield put(routerRedux.replace(redirect || '/welcome'));
       } else {
         message.error('登录过程中出现错误!');
       }
@@ -273,6 +230,7 @@ const Model: LoginModelType = {
       const { redirect } = getPageQuery();
       clearAuthorization();
       clearRememberMe();
+      setCurrentEnterprise('');
 
       // redirect
       if (window.location.pathname !== '/user/login' && !redirect) {
