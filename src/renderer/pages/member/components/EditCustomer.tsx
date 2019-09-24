@@ -123,6 +123,7 @@ class EditCustomer extends PureComponent<EditCustomerViewProps, EditCustomerView
           'introducer',
           'integral',
           'contactAddress',
+          'idCard',
           'note',
         ],
         (err, values) => {
@@ -306,7 +307,7 @@ class EditCustomer extends PureComponent<EditCustomerViewProps, EditCustomerView
                             </FormItem>
                           </Col>
                           <Col span={6}>
-                            <FormItem label="手机号(会员卡号)">
+                            <FormItem label="手机号">
                               {getFieldDecorator('mobile', {
                                 initialValue: dot.pick('mobile', values),
                                 rules: [
@@ -320,12 +321,12 @@ class EditCustomer extends PureComponent<EditCustomerViewProps, EditCustomerView
                           </Col>
                           <Col span={6}>
                             <FormItem label="身份证号">
-                              {getFieldDecorator('idcard', {
-                                initialValue: dot.pick('idcard', values),
+                              {getFieldDecorator('idCard', {
+                                initialValue: dot.pick('idCard', values),
                                 rules: [
                                   {
                                     required: true,
-                                    message: formatMessage({ id: 'customer.idcard.required' }),
+                                    message: formatMessage({ id: 'customer.idCard.required' }),
                                   },
                                 ],
                               })(<Input disabled={mode === 'view'} />)}
@@ -707,6 +708,7 @@ class EditCustomer extends PureComponent<EditCustomerViewProps, EditCustomerView
         <AddOptometryRecord
           open={this.state.openAddOptometryDialog}
           customer={this.props.customer}
+          idCard={form.getFieldValue('idCard')}
           toggleOpenState={state => {
             this.setState({
               openAddOptometryDialog: state,

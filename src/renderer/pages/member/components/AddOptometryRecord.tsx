@@ -6,6 +6,7 @@ import { connect } from 'dva';
 
 interface AddOptometryRecordProps extends BaseProps, FormComponentProps {
   customer?: string;
+  idCard?: string;
   open?: boolean;
   operators?: ConnectState['global']['operators'];
   toggleOpenState?: (state: boolean) => void;
@@ -28,7 +29,13 @@ class AddOptometryRecord extends PureComponent<AddOptometryRecordProps, AddOptom
   };
 
   handleSave = (e?: React.MouseEvent<HTMLElement, MouseEvent>) => {
-    const { dispatch = {} as TheDispatch, customer, onLastOptometryChange, form } = this.props;
+    const {
+      dispatch = {} as TheDispatch,
+      customer,
+      idCard,
+      onLastOptometryChange,
+      form,
+    } = this.props;
 
     form.validateFieldsAndScroll((err, values) => {
       dispatch({
@@ -36,6 +43,7 @@ class AddOptometryRecord extends PureComponent<AddOptometryRecordProps, AddOptom
         payload: {
           ...values,
           customerID: customer,
+          idCard,
         },
       }).then(optometry => {
         this.toggleCreateModal();
