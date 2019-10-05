@@ -72,14 +72,22 @@ const GlobalModel: GlobalModelType = {
     *loadOperators(action, effects) {
       const { select, call, put } = effects;
       const enterprise = yield select((s: ConnectState) => s.user.currentEnterprise);
-      const resp = yield call(findOperators, enterprise);
+      try {
+        const resp = yield call(findOperators, enterprise);
 
-      const { data } = resp;
+        const { data } = resp;
 
-      yield put({
-        type: 'saveOperators',
-        payload: data,
-      });
+        yield put({
+          type: 'saveOperators',
+          payload: data,
+        });
+      } catch (e) {
+        yield put({
+          type: 'saveOperators',
+          payload: [],
+        });
+      }
+      
     },
 
     *clearNotices({ payload }, { put, select }) {

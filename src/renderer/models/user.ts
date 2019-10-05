@@ -62,7 +62,9 @@ const UserModel: UserModelType = {
         type: 'fetchCurrentEnterprise',
       });
       yield take('fetchCurrentEnterprise/@@end');
-
+      yield put({
+        type: 'global/loadOperators',
+      });
       return true;
     },
 
