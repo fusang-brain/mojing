@@ -83,15 +83,16 @@ const UserModel: UserModelType = {
 
     *fetchCurrentEnterprise(_, { call, put, select }) {
       const user = yield select((s: ConnectState) => s.user.currentUser);
+      console.log(user);
       const { enterprises = [] } = user;
       let enterprise: string = '';
       const cachedEnterprise: string = getCurrentEnterprise();
-
+      console.log(enterprises, 'enterprises');
       if (enterprises && enterprises.length > 0) {
         if (enterprises.indexOf(cachedEnterprise) >= 0) {
           enterprise = cachedEnterprise;
         } else {
-          enterprise = enterprises[0]._id;
+          enterprise = enterprises[0];
         }
       }
 
