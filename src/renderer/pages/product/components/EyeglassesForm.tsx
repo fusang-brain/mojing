@@ -83,7 +83,9 @@ class EyeglassesForm extends PureComponent<IEyeglassesFormProps, FormState> {
       reader.onerror = error => reject(error);
     });
   }
-  handleCancel = () => this.setState({ previewVisible: false });
+  handleCancel = () => {
+    this.setState({ previewVisible: false });
+  }
   
   handleChange = (obj: any) => {
     this.setState({ fileList: [ ...obj.fileList ] });

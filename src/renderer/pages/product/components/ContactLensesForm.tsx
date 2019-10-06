@@ -300,8 +300,11 @@ class ContactLensesForm extends PureComponent<IContactLensesForm, IContactLenses
       reader.onerror = error => reject(error);
     });
   }
-  handleCancel = () => this.setState({ previewVisible: false });
+  // handleCancel = () => this.setState({ previewVisible: false });
   
+  handleCancel = () => {
+    this.setState({ previewVisible: false });
+  }
   handleChange = (obj: any) => {
     this.setState({ fileList: [ ...obj.fileList ] });
   };
