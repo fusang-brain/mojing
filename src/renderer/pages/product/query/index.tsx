@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
-import { Button, Icon, Tag, Empty, Tooltip } from 'antd';
+import { Button, Icon, Tag, Empty, Tooltip, Popconfirm } from 'antd';
 import DataTable from '@/components/DataTable';
 // import { ColumnProps } from '@/components/DataTable/interface';
 import { BaseProps, ConnectState } from '@/models/connect';
@@ -8,6 +8,7 @@ import { connect } from 'dva';
 import { SystemSettingType } from '@/config/systemSettings';
 import { ColumnProps } from '@/components/DataTable/interface';
 import styles from './index.less';
+import { router } from 'umi';
 
 // export default (): React.ReactNode => (
 //   <PageHeaderWrapper>
@@ -72,6 +73,18 @@ class Query extends PureComponent<IProductQueryProps, IProductQueryState> {
     });
   };
 
+  delProdcut = (record:any) =>{
+    const { _id } = record;
+    const { dispatch } = this.props;
+    if (!dispatch) {
+      return;
+    }
+    dispatch({
+      type: 'product/removeProduct',
+      payload:_id,
+    });
+  };
+
   get tableColumns(): ColumnProps<IProductItem>[] {
     return [
       {
@@ -129,11 +142,9 @@ class Query extends PureComponent<IProductQueryProps, IProductQueryState> {
         dataIndex: 'actions',
         title: '操作',
         align: 'left',
-
         width: 150,
         render: (_: any, record: any) => {
-          const { kind } = record;
-          console.log(kind);
+          // const { kind } = record;
           return (
             <div className={styles.buttonGroup}>
               <Tooltip title="编辑">
@@ -143,7 +154,9 @@ class Query extends PureComponent<IProductQueryProps, IProductQueryState> {
                 <Button icon="bars" type="default" />
               </Tooltip>
               <Tooltip title="删除">
-                <Button icon="delete" type="danger" />
+                <Popconfirm title="确定移除商品?" onConfirm={()=>this.delProdcut(record)}>
+                  <Button icon="delete" type="danger"/>
+                </Popconfirm>
               </Tooltip>
             </div>
           );
@@ -324,7 +337,9 @@ class Query extends PureComponent<IProductQueryProps, IProductQueryState> {
       <PageHeaderWrapper
         content="查询店内商品"
         extraContent={
-          <Button>
+          <Button onClick={()=>{
+            router.push('/product/add');
+          }}>
             <Icon type="plus" />
             添加商品
           </Button>
