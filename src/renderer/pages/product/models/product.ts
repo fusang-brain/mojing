@@ -197,7 +197,7 @@ export default {
           },
         });
 
-        message.success('商品信息成功');
+        message.success('商品移除成功');
         return true;
       } else {
         message.error('商品移除失败');

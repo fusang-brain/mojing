@@ -96,7 +96,7 @@ class OrderPane extends PureComponent<OrderPaneProps, OrderPaneState> {
             </Col>
 
             <Col span={12}>
-              <FormItem label="收货仓库">
+              <FormItem label={this.props.kind === 'instock' ? '收货仓库' : '出货仓库'}>
                 {getFieldDecorator('stock', {
                   initialValue: currentOrder.stock,
                 })(<SelectStock />)}
