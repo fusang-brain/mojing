@@ -96,7 +96,14 @@ export default class SelectProductBatch extends PureComponent<
         showSearch
         showArrow={false}
         // mode="multiple"
-        notFoundContent={fetching ? <Loading size="small" /> : <Empty />}
+        onFocus={() => {
+          this.setState({
+            data: [],
+            fetching: true,
+          });
+          this.handleSearch('');
+        }}
+        notFoundContent={fetching ? <div style={{ width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'center'}}> <Loading size="small" /></div> : <div style={{ width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'center'}}><Empty /></div>}
         onSearch={this.handleSearch}
         onChange={this.handleChange}
         filterOption={false}

@@ -56,6 +56,8 @@ class UpgradeItemsPane extends PureComponent<UpgradeItemsPaneProps, UpgradeItems
   };
 
   toggleShowSelectPane = () => {
+    const { form } = this.props;
+    form.resetFields();
     this.setState({
       showSelectPane: !this.state.showSelectPane,
     });
@@ -154,7 +156,7 @@ class UpgradeItemsPane extends PureComponent<UpgradeItemsPaneProps, UpgradeItems
                     });
                     setFieldsValue({
                       startDate: moment(selectedBatchInfo.startDate || ''),
-                      expirationDate: moment(selectedBatchInfo.startDate || ''),
+                      expirationDate: moment(selectedBatchInfo.expirationDate || ''),
                       color: selectedBatchInfo.color || '',
                       diopter: selectedBatchInfo.diopter || '',
                       BOZR: selectedBatchInfo.BOZR || '',
