@@ -1,5 +1,5 @@
 import React, { PureComponent, FormEvent } from 'react';
-import { Form, Empty, Input, Select, Typography, Row, Col, Button } from 'antd';
+import { Form, Empty, Input, Select, Typography, Row, Col, Button ,Icon ,Upload ,Modal } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import styles from './form.less';
 import AmountInput from '@/components/DataEntry/AmountInput';
@@ -14,17 +14,25 @@ interface IBaseProductFormProps extends FormComponentProps {
 
 interface FormState {
   productCode?: string;
+  previewVisible?:boolean;
+  previewImage?:string;
+  fileList: Array<any>;
 }
 
 class BaseProductFormView extends PureComponent<IBaseProductFormProps, FormState> {
   state: FormState = {
     productCode: genProductCode(),
+    previewVisible: false,
+    previewImage: '',
+    fileList: [],
   };
+
 
   // 提交表单
   handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const { form, onSubmit } = this.props;
+    let pictures =  this.getPicturesForFileList();
     if (form) {
       const { validateFieldsAndScroll } = form;
       validateFieldsAndScroll((err, values) => {
@@ -32,6 +40,7 @@ class BaseProductFormView extends PureComponent<IBaseProductFormProps, FormState
           values['kind'] = '0';
           values.salePrice = Number(values.salePrice);
           values.unitPurchasePrice = Number(values.unitPurchasePrice);
+          values.pictures = pictures;
           onSubmit &&
             onSubmit(values).then(ok => {
               if (ok) {
@@ -46,12 +55,53 @@ class BaseProductFormView extends PureComponent<IBaseProductFormProps, FormState
     }
   };
 
+  getPicturesForFileList = () =>{
+    const { fileList } = this.state;
+    let pictures:string[] = [];
+    fileList.forEach(e => {
+      if(e.response){
+        e.response.files.forEach((element:any) => {
+          pictures.push(element.id);
+        });
+      }
+    });
+    return pictures;
+  }
+
   getFieldValue = (key: string) => {
     const { form } = this.props;
     if (!form) {
       return null;
     }
     return form.getFieldValue(key);
+  };
+
+  getBase64(file:any) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = error => reject(error);
+    });
+  }
+  // handleCancel = () => this.setState({ previewVisible: false });
+  handleCancel = () => {
+    this.setState({ previewVisible: false });
+  }
+  
+  handleChange = (obj: any) => {
+    this.setState({ fileList: [ ...obj.fileList ] });
+  };
+
+  handlePreview = async (file: any) => {
+    if (!file.url && !file.preview) {
+      file.preview = await this.getBase64(file.originFileObj);
+    }
+
+    this.setState({
+      previewImage: file.url || file.preview,
+      previewVisible: true,
+    });
   };
 
   render() {
@@ -61,7 +111,13 @@ class BaseProductFormView extends PureComponent<IBaseProductFormProps, FormState
     }
 
     const { getFieldDecorator } = form;
-
+    const { previewVisible, previewImage, fileList } = this.state;
+    const uploadButton = (
+      <div>
+        <Icon type="plus" />
+        <div className="ant-upload-text">上传图片</div>
+      </div>
+    );
     return (
       <Form className={styles.formContainer} onSubmit={this.handleSubmit}>
         <div className={styles.form}>
@@ -168,6 +224,25 @@ class BaseProductFormView extends PureComponent<IBaseProductFormProps, FormState
             <div className={styles.extendInfo}>
               <Typography.Title level={3}>扩展信息</Typography.Title>
 
+              <Row>
+                <Col xs={24} sm={24}>
+                  <FormItem label="商品图片" >
+                    <Upload
+                      action="/apis/file/upload"
+                      listType="picture-card"
+                      fileList={fileList}
+                      onPreview={this.handlePreview}
+                      onChange={this.handleChange}
+                      name="files"
+                    >
+                      {fileList.length >= 5 ? null : uploadButton}
+                    </Upload>
+                    <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
+                      <img alt="example" style={{ width: '100%' }} src={previewImage} />
+                    </Modal>
+                  </FormItem>
+                </Col>
+              </Row>
               <Row gutter={16}>
                 <Col xs={24} sm={12}>
                   <FormItem label="型号">

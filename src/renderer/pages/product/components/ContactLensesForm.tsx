@@ -12,6 +12,7 @@ import {
   Modal,
   DatePicker,
   Drawer,
+  Upload,
 } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import styles from './form.less';
@@ -42,6 +43,9 @@ interface IContactLensesFormState {
   batchDrawerVisible?: boolean;
   productCode?: string;
   createdProductID?: string;
+  previewVisible?:boolean;
+  previewImage?:string;
+  fileList:Array<any>;
 }
 
 class ContactLensesForm extends PureComponent<IContactLensesForm, IContactLensesFormState> {
@@ -50,6 +54,9 @@ class ContactLensesForm extends PureComponent<IContactLensesForm, IContactLenses
     batchDrawerVisible: false,
     productCode: genProductCode(),
     createdProductID: '',
+    previewVisible: false,
+    previewImage: '',
+    fileList:[],
   };
 
   get productBatchNumberColumn() {
@@ -145,9 +152,10 @@ class ContactLensesForm extends PureComponent<IContactLensesForm, IContactLenses
   handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const { form, onSubmit } = this.props;
+    let pictures =  this.getPicturesForFileList();
     if (form) {
       const { validateFieldsAndScroll } = form;
-
+      
       validateFieldsAndScroll(
         [
           'code',
@@ -167,6 +175,7 @@ class ContactLensesForm extends PureComponent<IContactLensesForm, IContactLenses
             values.salePrice = Number(values.salePrice);
             values.unitPurchasePrice = Number(values.unitPurchasePrice);
             values.productionBatch = [];
+            values.pictures = pictures;
             onSubmit &&
               onSubmit(values).then(id => {
                 if (id) {
@@ -196,6 +205,19 @@ class ContactLensesForm extends PureComponent<IContactLensesForm, IContactLenses
       );
     }
   };
+
+  getPicturesForFileList = () =>{
+    const { fileList } = this.state;
+    let pictures:string[] = [];
+    fileList.forEach(e => {
+      if(e.response){
+        e.response.files.forEach((element:any) => {
+          pictures.push(element.id);
+        });
+      }
+    });
+    return pictures;
+  }
 
   getFieldValue = (key: string) => {
     const { form } = this.props;
@@ -270,6 +292,35 @@ class ContactLensesForm extends PureComponent<IContactLensesForm, IContactLenses
     });
   };
 
+  getBase64(file:any) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = error => reject(error);
+    });
+  }
+  // handleCancel = () => this.setState({ previewVisible: false });
+  
+  handleCancel = () => {
+    this.setState({ previewVisible: false });
+  }
+  handleChange = (obj: any) => {
+    this.setState({ fileList: [ ...obj.fileList ] });
+  };
+
+  handlePreview = async (file: any) => {
+    if (!file.url && !file.preview) {
+      file.preview = await this.getBase64(file.originFileObj);
+    }
+
+    this.setState({
+      previewImage: file.url || file.preview,
+      previewVisible: true,
+    });
+  };
+
+
   render() {
     const { form } = this.props;
     if (!form) {
@@ -277,6 +328,13 @@ class ContactLensesForm extends PureComponent<IContactLensesForm, IContactLenses
     }
 
     const { getFieldDecorator } = form;
+    const { previewVisible, previewImage, fileList } = this.state;
+    const uploadButton = (
+      <div>
+        <Icon type="plus" />
+        <div className="ant-upload-text">上传图片</div>
+      </div>
+    );
 
     return (
       <>
@@ -364,7 +422,25 @@ class ContactLensesForm extends PureComponent<IContactLensesForm, IContactLenses
 
               <div className={styles.extendInfo}>
                 <Typography.Title level={3}>扩展信息</Typography.Title>
-
+                <Row>
+                  <Col xs={24} sm={24}>
+                    <FormItem label="商品图片" >
+                      <Upload
+                        action="/apis/file/upload"
+                        listType="picture-card"
+                        fileList={fileList}
+                        onPreview={this.handlePreview}
+                        onChange={this.handleChange}
+                        name="files"
+                      >
+                        {fileList.length >= 5 ? null : uploadButton}
+                      </Upload>
+                      <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
+                        <img alt="example" style={{ width: '100%' }} src={previewImage} />
+                      </Modal>
+                    </FormItem>
+                  </Col>
+                </Row>
                 <Row gutter={16}>
                   <Col xs={24} sm={12}>
                     <FormItem label="供应商">

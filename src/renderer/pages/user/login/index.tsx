@@ -1,4 +1,4 @@
-import { Alert, Checkbox } from 'antd';
+import { Alert, Checkbox, Button } from 'antd';
 import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
 import React, { Component } from 'react';
 
@@ -12,6 +12,7 @@ import LoginComponents from './components/Login';
 import styles from './style.less';
 
 import { ConnectState } from '@/models/connect';
+import { router } from 'umi';
 
 const { Tab, Mobile, Password, Submit } = LoginComponents;
 
@@ -193,6 +194,13 @@ class Login extends Component<LoginProps, LoginState> {
           <Submit loading={submitting}>
             <FormattedMessage id="user-login.login.login" />
           </Submit>
+          <Button onClick={
+            () => {
+              router.push('/user/register');
+            } 
+          }>
+            去注册
+          </Button>
         </LoginComponents>
       </div>
     );
