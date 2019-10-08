@@ -40,7 +40,7 @@ class OutstockView extends PureComponent<OutstockViewProps, OutstockViewState> {
         width: 300,
       },
       {
-        title: '进货日期',
+        title: '出货日期',
         dataIndex: 'outStockTime',
         width: 150,
         render: (value: string) => {

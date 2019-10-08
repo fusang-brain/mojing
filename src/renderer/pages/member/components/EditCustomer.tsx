@@ -36,6 +36,7 @@ interface EditCustomerViewProps extends FormComponentProps, BaseProps {
   onChangeMode?: (mode: 'create' | 'update' | 'view') => void;
   customer?: string;
   onValueChange?: (values: any) => void;
+  onModeChange?: (mode: 'create' | 'update' | 'view') => void;
 }
 
 interface EditCustomerViewState {
@@ -109,7 +110,7 @@ class EditCustomer extends PureComponent<EditCustomerViewProps, EditCustomerView
   };
 
   handleSaveBaseInfo = () => {
-    const { form, dispatch = {} as TheDispatch, mode, onCustomerChange } = this.props;
+    const { form, dispatch = {} as TheDispatch, mode, onCustomerChange, onModeChange } = this.props;
 
     return new Promise<string>((resolve, reject) => {
       form.validateFieldsAndScroll(
@@ -142,6 +143,9 @@ class EditCustomer extends PureComponent<EditCustomerViewProps, EditCustomerView
               })
               .then((id: string) => {
                 resolve(id);
+              })
+              .then(()=>{
+                onModeChange && onModeChange('update');
               });
           }
 
@@ -262,6 +266,7 @@ class EditCustomer extends PureComponent<EditCustomerViewProps, EditCustomerView
           width={'100%'}
           placement="right"
           closable
+          destroyOnClose={true}
           onClose={() => {
             this.handleClose();
           }}
@@ -716,7 +721,6 @@ class EditCustomer extends PureComponent<EditCustomerViewProps, EditCustomerView
           }}
           onLastOptometryChange={optometryInfo => {
             const { form } = this.props;
-
             const values = form.getFieldsValue();
             const { onValueChange } = this.props;
             onValueChange &&

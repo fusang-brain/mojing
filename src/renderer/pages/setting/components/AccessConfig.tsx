@@ -177,14 +177,14 @@ class AccessConfig extends PureComponent<IAccessConfigProps, IAccessConfigState>
    */
   handleDeleteRole = (group: any) => () => {
     const { dispatch = {} as TheDispatch } = this.props;
-
+    console.log(group._id,"|222222222222222222");
     Modal.confirm({
       title: `删除角色组 ${group.name}`,
       content: `删除角色组 ${group.name} 时, 将同时删除该角色组成员被赋予的权限, 是否继续删除？`,
       onOk: () => {
         dispatch({
           type: 'accessGroup/remove',
-          payload: group.id,
+          payload: group._id,
         });
       },
       cancelText: '取消',
