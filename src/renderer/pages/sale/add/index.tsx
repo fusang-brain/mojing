@@ -12,6 +12,8 @@ import {
   Button,
   Select,
   message,
+  Tooltip,
+  Icon,
 } from 'antd';
 import { FormComponentProps } from 'antd/es/form';
 import DataTable from '@/components/DataTable';
@@ -92,30 +94,65 @@ class AddSaleView extends PureComponent<AddSaleViewProps, AddSaleViewState> {
         width: 150,
         dataIndex: 'actions',
         align: 'right',
-        render: (_: any, record: any) => {
+        render: (_: any, record: any,index:number) => {
           // console.log(record);
           return (
             <>
-            {/* <Tooltip title="添加数量">
-              <IconButton onClick={this.handleAddCount(record)}>
-                <Add />
-              </IconButton>
+            <Tooltip title="添加数量">
+              <Button onClick={()=>this.handleAddCount(record,index)}>
+                <Icon type="plus" />
+              </Button>
             </Tooltip>
 
             <Tooltip title="减少数量">
-              <IconButton onClick={this.handleRemoveCount(record)}>
-                <Remove />
-              </IconButton>
+              <Button onClick={()=>this.handleRemoveCount(record, index)}>
+                <Icon type="minus" />
+              </Button>
             </Tooltip>
             
-            <IconButton color="secondary" onClick={this.handleDeleteCount}>
-              <Delete />
-            </IconButton> */}
+            <Button color="secondary" onClick={this.handleDeleteCount(record)}>
+              <Icon type="delete" />
+            </Button>
             </>
           );
         },
       },
     ];
+  }
+
+  handleAddCount = (record: any,index: number) => {
+    const total = record.total + 1;
+    const { products = [] } = this.state;
+    products[index].total = total;
+    this.setState({
+      products: [
+        ...products,
+      ],
+    });
+  }
+
+  handleRemoveCount = (record: any, index: number) =>{
+    if (record.total === 1) {
+      return;
+    }
+    const total = record.total - 1;
+    const { products = [] } = this.state;
+    products[index].total = total;
+    this.setState({
+      products: [
+        ...products,
+      ],
+    });
+  }
+
+  handleDeleteCount = (record: any) => () => {
+    console.log(record);
+    const { products = [] } = this.state;
+    const newProducts = products.filter((item) => item.productID !== record.productID);
+
+    this.setState({
+      products: newProducts,
+    });
   }
 
   openAddOneDialog = () => {
@@ -362,6 +399,7 @@ class AddSaleView extends PureComponent<AddSaleViewProps, AddSaleViewState> {
               <Col span={12}>
                 <Form.Item label="支付方式">
                   {getFieldDecorator('paidType', {
+                    initialValue: 1,
                     rules: [
                       {
                         required: true,
@@ -391,7 +429,15 @@ class AddSaleView extends PureComponent<AddSaleViewProps, AddSaleViewState> {
               </Col>
               <Col span={12}>
                 <Form.Item label="成交金额">
-                  {getFieldDecorator('amount')(<InputNumber />)}
+                  {getFieldDecorator('amount', {
+                    initialValue: this.totalAmount,
+                    rules: [
+                      {
+                        required: true,
+                        message: '请填写成交金额'
+                      }
+                    ]
+                  })(<InputNumber />)}
                 </Form.Item>
               </Col>
               {form.getFieldValue('paidType') === 5 ? (
