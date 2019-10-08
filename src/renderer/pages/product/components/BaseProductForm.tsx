@@ -8,6 +8,7 @@ import { genProductCode } from '@/utils/helper';
 const FormItem = Form.Item;
 
 interface IBaseProductFormProps extends FormComponentProps {
+  initData?: any;
   onSubmit?: (values: any) => Promise<any>;
   loading?: boolean;
 }
@@ -105,7 +106,7 @@ class BaseProductFormView extends PureComponent<IBaseProductFormProps, FormState
   };
 
   render() {
-    const { form } = this.props;
+    const { form, initData = {} } = this.props;
     if (!form) {
       return <Empty />;
     }
@@ -128,13 +129,14 @@ class BaseProductFormView extends PureComponent<IBaseProductFormProps, FormState
                 <Col xs={24} sm={12}>
                   <FormItem label="商品条码">
                     {getFieldDecorator('code', {
+                      
                       rules: [
                         {
                           required: true,
                           message: formatMessage({ id: 'product.code.required' }),
                         },
                       ],
-                      initialValue: this.state.productCode,
+                      initialValue: initData.code || this.state.productCode,
                     })(<Input placeholder="商品条码" size="large" />)}
                   </FormItem>
                 </Col>
@@ -148,6 +150,7 @@ class BaseProductFormView extends PureComponent<IBaseProductFormProps, FormState
                           message: formatMessage({ id: 'product.category.required' }),
                         },
                       ],
+                      initialValue: initData.category,
                     })(
                       <Select size="large" placeholder="选择商品类型">
                         <Select.Option value="glassesFrame">镜框</Select.Option>
@@ -163,6 +166,7 @@ class BaseProductFormView extends PureComponent<IBaseProductFormProps, FormState
                 <Col xs={24} sm={12}>
                   <FormItem label="商品名称">
                     {getFieldDecorator('name', {
+                      initialValue: initData.name,
                       rules: [
                         {
                           required: true,
@@ -176,6 +180,7 @@ class BaseProductFormView extends PureComponent<IBaseProductFormProps, FormState
                 <Col xs={24} sm={12}>
                   <FormItem label="商品售价">
                     {getFieldDecorator('salePrice', {
+                      initialValue: initData.salePrice,
                       rules: [
                         {
                           required: true,
@@ -189,6 +194,7 @@ class BaseProductFormView extends PureComponent<IBaseProductFormProps, FormState
                 <Col xs={24} sm={12}>
                   <FormItem label="进货价">
                     {getFieldDecorator('unitPurchasePrice', {
+                      initialValue: initData.unitPurchasePrice,
                       rules: [
                         {
                           required: true,
@@ -201,7 +207,9 @@ class BaseProductFormView extends PureComponent<IBaseProductFormProps, FormState
 
                 <Col xs={24} sm={12}>
                   <FormItem label="生产企业">
-                    {getFieldDecorator('manufacturers')(
+                    {getFieldDecorator('manufacturers', {
+                      initialValue: initData.manufacturers,
+                    })(
                       <Input placeholder="生产企业" size="large" />,
                     )}
                   </FormItem>
@@ -209,13 +217,17 @@ class BaseProductFormView extends PureComponent<IBaseProductFormProps, FormState
 
                 <Col xs={24} sm={12}>
                   <FormItem label="供货商">
-                    {getFieldDecorator('provider')(<Input placeholder="供货商" size="large" />)}
+                    {getFieldDecorator('provider', {
+                      initialValue: initData.provider,
+                    })(<Input placeholder="供货商" size="large" />)}
                   </FormItem>
                 </Col>
 
                 <Col xs={24} sm={12}>
                   <FormItem label="品牌">
-                    {getFieldDecorator('brand')(<Input placeholder="品牌" size="large" />)}
+                    {getFieldDecorator('brand', {
+                      initialValue: initData.brand,
+                    })(<Input placeholder="品牌" size="large" />)}
                   </FormItem>
                 </Col>
               </Row>
@@ -246,7 +258,9 @@ class BaseProductFormView extends PureComponent<IBaseProductFormProps, FormState
               <Row gutter={16}>
                 <Col xs={24} sm={12}>
                   <FormItem label="型号">
-                    {getFieldDecorator('typeSpecification')(
+                    {getFieldDecorator('typeSpecification', {
+                      initialValue: initData.typeSpecification
+                    })(
                       <Input placeholder="型号" size="large" />,
                     )}
                   </FormItem>
@@ -254,14 +268,18 @@ class BaseProductFormView extends PureComponent<IBaseProductFormProps, FormState
 
                 <Col xs={24} sm={12}>
                   <FormItem label="色号">
-                    {getFieldDecorator('colorNumber')(<Input placeholder="色号" size="large" />)}
+                    {getFieldDecorator('colorNumber', {
+                      initialValue: initData.colorNumber
+                    })(<Input placeholder="色号" size="large" />)}
                   </FormItem>
                 </Col>
 
                 {this.getFieldValue('category') === 'presbyopicGlasses' ? (
                   <Col xs={24} sm={12}>
                     <FormItem label="度数">
-                      {getFieldDecorator('diopter')(<Input placeholder="度数" size="large" />)}
+                      {getFieldDecorator('diopter', {
+                        initialValue: initData.diopter
+                      })(<Input placeholder="度数" size="large" />)}
                     </FormItem>
                   </Col>
                 ) : null}
@@ -270,7 +288,9 @@ class BaseProductFormView extends PureComponent<IBaseProductFormProps, FormState
                   <>
                     <Col xs={24} sm={12}>
                       <FormItem label="镜架高度">
-                        {getFieldDecorator('frameHeight')(
+                        {getFieldDecorator('frameHeight', {
+                          initialValue: initData.frameHeight
+                        })(
                           <Input placeholder="镜架高度" size="large" />,
                         )}
                       </FormItem>
@@ -278,7 +298,9 @@ class BaseProductFormView extends PureComponent<IBaseProductFormProps, FormState
 
                     <Col xs={24} sm={12}>
                       <FormItem label="架面宽度">
-                        {getFieldDecorator('frameWidth')(
+                        {getFieldDecorator('frameWidth', {
+                          initialValue: initData.frameWidth
+                        })(
                           <Input placeholder="架面宽度" size="large" />,
                         )}
                       </FormItem>
@@ -286,7 +308,9 @@ class BaseProductFormView extends PureComponent<IBaseProductFormProps, FormState
 
                     <Col xs={24} sm={12}>
                       <FormItem label="鼻梁宽度">
-                        {getFieldDecorator('noseBridgeWeight')(
+                        {getFieldDecorator('noseBridgeWeight', {
+                          initialValue: initData.noseBridgeWeight
+                        })(
                           <Input placeholder="鼻梁宽度" size="large" />,
                         )}
                       </FormItem>
@@ -294,12 +318,16 @@ class BaseProductFormView extends PureComponent<IBaseProductFormProps, FormState
 
                     <Col xs={24} sm={12}>
                       <FormItem label="镜腿长">
-                        {getFieldDecorator('frameLegLength')(<Input size="large" />)}
+                        {getFieldDecorator('frameLegLength', {
+                          initialValue: initData.frameLegLength
+                        })(<Input size="large" />)}
                       </FormItem>
                     </Col>
                     <Col xs={24} sm={12}>
                       <FormItem label="镜架重量">
-                        {getFieldDecorator('frameWeight')(<Input size="large" />)}
+                        {getFieldDecorator('frameWeight', {
+                          initialValue: initData.frameWeight
+                        })(<Input size="large" />)}
                       </FormItem>
                     </Col>
                   </>

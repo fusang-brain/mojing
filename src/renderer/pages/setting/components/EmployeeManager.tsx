@@ -76,7 +76,7 @@ class EmployeeManager extends PureComponent<IEmployeeManagerProps, IEmployeeMana
         align: 'right',
         dataIndex: 'action',
         render: (txt: string, record: any) => {
-          console.log(txt, record);
+          // console.log(txt, record);
           return (
             <>
               <Button size="small" onClick={this.openUpdateDialog(record)}>

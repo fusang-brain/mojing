@@ -4,7 +4,7 @@ const path = require('path');
 const webpack = require('webpack');
 
 module.exports = function(context) {
-  console.log(context, 'context');
+  // console.log(context, 'context');
   context.plugins.push(new webpack.DefinePlugin({
     '$$dirname': '__dirname',
   }));

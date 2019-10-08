@@ -126,7 +126,7 @@ class CreateEnterprise extends Component<CreateEnterpriseProps, CreateEnterprise
     if (form) {
       form.validateFieldsAndScroll((err, values) => {
         if (!err) {
-          console.log(values);
+          // console.log(values);
           this.setState({
             current: this.state.current + 1,
             enterpriseInfo: {

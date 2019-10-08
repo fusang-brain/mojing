@@ -106,7 +106,7 @@ export default {
         const resp = yield call(findProductInfo, id);
 
         const { data } = resp;
-        console.log(data, 'response data');
+        // console.log(data, 'response data');
         yield put({
           type: 'saveSelectedItem',
           payload: data.info,

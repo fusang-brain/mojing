@@ -94,7 +94,7 @@ class AddSaleView extends PureComponent<AddSaleViewProps, AddSaleViewState> {
         dataIndex: 'actions',
         align: 'right',
         render: (_: any, record: any) => {
-          console.log(record);
+          // console.log(record);
           return (
             <>
               {/* <Tooltip title="添加数量">
