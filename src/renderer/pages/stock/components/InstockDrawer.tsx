@@ -252,7 +252,7 @@ class InstockDrawer extends PureComponent<InstockDrawerProps, InstockDrawerState
 
   // Step 3
   renderCheckPane = () => {
-    console.log('check');
+    // console.log('check');
     return (
       <CheckItemsTable kind="instock" prevStep={() => this.prev()} nextStep={this.handleInstock} />
     );

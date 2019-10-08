@@ -29,6 +29,7 @@ const FormItem = Form.Item;
 export interface IProductBatchNumber {}
 
 interface IContactLensesForm extends FormComponentProps {
+  initData?: any;
   onSubmit?: (values: any) => Promise<any>;
   onBatchCreate?: (values: any) => Promise<any>;
   onBatchRemove?: (values: any) => Promise<any>;
@@ -39,7 +40,6 @@ interface IContactLensesForm extends FormComponentProps {
 
 interface IContactLensesFormState {
   batchFormVisible?: boolean;
-
   batchDrawerVisible?: boolean;
   productCode?: string;
   createdProductID?: string;
@@ -322,7 +322,7 @@ class ContactLensesForm extends PureComponent<IContactLensesForm, IContactLenses
 
 
   render() {
-    const { form } = this.props;
+    const { form, initData = {} } = this.props;
     if (!form) {
       return <Empty />;
     }
@@ -347,7 +347,7 @@ class ContactLensesForm extends PureComponent<IContactLensesForm, IContactLenses
                   <Col xs={24} sm={12}>
                     <FormItem label="商品条码">
                       {getFieldDecorator('code', {
-                        initialValue: this.state.productCode,
+                        initialValue: initData.code || this.state.productCode,
                         rules: [
                           {
                             required: true,
@@ -361,6 +361,7 @@ class ContactLensesForm extends PureComponent<IContactLensesForm, IContactLenses
                   <Col xs={24} sm={12}>
                     <FormItem label="商品分类">
                       {getFieldDecorator('category', {
+                        initialValue: initData.category,
                         rules: [
                           {
                             required: true,
@@ -381,6 +382,7 @@ class ContactLensesForm extends PureComponent<IContactLensesForm, IContactLenses
                   <Col xs={24} sm={12}>
                     <FormItem label="商品名称">
                       {getFieldDecorator('name', {
+                        initialValue: initData.name,
                         rules: [
                           {
                             required: true,
@@ -394,6 +396,7 @@ class ContactLensesForm extends PureComponent<IContactLensesForm, IContactLenses
                   <Col xs={24} sm={12}>
                     <FormItem label="注册证号">
                       {getFieldDecorator('registerCode', {
+                        initialValue: initData.registerCode,
                         rules: [
                           {
                             required: true,
@@ -406,7 +409,9 @@ class ContactLensesForm extends PureComponent<IContactLensesForm, IContactLenses
 
                   <Col xs={24} sm={12}>
                     <FormItem label="生产企业">
-                      {getFieldDecorator('manufacturers')(
+                      {getFieldDecorator('manufacturers', {
+                        initialValue: initData.manufacturers,
+                      })(
                         <Input placeholder="生产企业" size="large" />,
                       )}
                     </FormItem>
@@ -414,7 +419,9 @@ class ContactLensesForm extends PureComponent<IContactLensesForm, IContactLenses
 
                   <Col xs={24} sm={12}>
                     <FormItem label="计量单位">
-                      {getFieldDecorator('unit')(<Input placeholder="计量单位" size="large" />)}
+                      {getFieldDecorator('unit', {
+                        initialValue: initData.unit,
+                      })(<Input placeholder="计量单位" size="large" />)}
                     </FormItem>
                   </Col>
                 </Row>
@@ -444,13 +451,16 @@ class ContactLensesForm extends PureComponent<IContactLensesForm, IContactLenses
                 <Row gutter={16}>
                   <Col xs={24} sm={12}>
                     <FormItem label="供应商">
-                      {getFieldDecorator('provider')(<Input placeholder="供应商" size="large" />)}
+                      {getFieldDecorator('provider', {
+                        initialValue: initData.provider,
+                      })(<Input placeholder="供应商" size="large" />)}
                     </FormItem>
                   </Col>
 
                   <Col xs={24} sm={12}>
                     <FormItem label="商品售价">
                       {getFieldDecorator('salePrice', {
+                        initialValue: initData.salePrice,
                         rules: [
                           {
                             required: true,
@@ -464,6 +474,7 @@ class ContactLensesForm extends PureComponent<IContactLensesForm, IContactLenses
                   <Col xs={24} sm={12}>
                     <FormItem label="进货价">
                       {getFieldDecorator('unitPurchasePrice', {
+                        initialValue: initData.unitPurchasePrice,
                         rules: [
                           {
                             required: true,

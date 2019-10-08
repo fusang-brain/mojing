@@ -42,10 +42,10 @@ const GlobalHeaderRight: React.SFC<GlobalHeaderRightProps> = props => {
           }),
         ]}
         onSearch={value => {
-          console.log('input', value);
+          // console.log('input', value);
         }}
         onPressEnter={value => {
-          console.log('enter', value);
+          // console.log('enter', value);
         }}
       />
       {/* <Tooltip

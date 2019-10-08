@@ -8,6 +8,7 @@ import { genProductCode } from '@/utils/helper';
 const FormItem = Form.Item;
 
 interface IServiceProductFormProps extends FormComponentProps {
+  initData?: any;
   onSubmit?: (values: any) => Promise<any>;
   loading?: boolean;
 }
@@ -105,7 +106,7 @@ class ServiceProductForm extends PureComponent<IServiceProductFormProps, FormSta
   };
 
   render() {
-    const { form } = this.props;
+    const { form, initData = {} } = this.props;
     if (!form) {
       return <Empty />;
     }
@@ -129,7 +130,7 @@ class ServiceProductForm extends PureComponent<IServiceProductFormProps, FormSta
                 <Col xs={24} sm={12}>
                   <FormItem label="商品条码">
                     {getFieldDecorator('code', {
-                      initialValue: this.state.productCode,
+                      initialValue: initData.code || this.state.productCode,
                       rules: [
                         {
                           required: true,
@@ -143,6 +144,7 @@ class ServiceProductForm extends PureComponent<IServiceProductFormProps, FormSta
                 <Col xs={24} sm={12}>
                   <FormItem label="商品名称">
                     {getFieldDecorator('name', {
+                      initialValue: initData.name,
                       rules: [
                         {
                           required: true,
@@ -156,6 +158,7 @@ class ServiceProductForm extends PureComponent<IServiceProductFormProps, FormSta
                 <Col xs={24} sm={12}>
                   <FormItem label="商品售价">
                     {getFieldDecorator('salePrice', {
+                      initialValue: initData.salePrice,
                       rules: [
                         {
                           required: true,
@@ -169,6 +172,7 @@ class ServiceProductForm extends PureComponent<IServiceProductFormProps, FormSta
                 <Col xs={24} sm={12}>
                   <FormItem label="进货价">
                     {getFieldDecorator('unitPurchasePrice', {
+                      initialValue: initData.unitPurchasePrice,
                       rules: [
                         {
                           required: true,
@@ -181,7 +185,9 @@ class ServiceProductForm extends PureComponent<IServiceProductFormProps, FormSta
 
                 <Col xs={24} sm={12}>
                   <FormItem label="生产企业">
-                    {getFieldDecorator('manufacturers')(
+                    {getFieldDecorator('manufacturers', {
+                      initialValue: initData.manufacturers,
+                    })(
                       <Input placeholder="生产企业" size="large" />,
                     )}
                   </FormItem>

@@ -252,7 +252,7 @@ class OutstockDrawer extends PureComponent<OutstockDrawerProps, OutstockDrawerSt
 
   // Step 3
   renderCheckPane = () => {
-    console.log('check');
+    // console.log('check');
     return (
       <CheckItemsTable kind="outstock" prevStep={() => this.prev()} nextStep={this.handleInstock} />
     );

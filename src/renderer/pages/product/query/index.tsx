@@ -9,6 +9,7 @@ import { SystemSettingType } from '@/config/systemSettings';
 import { ColumnProps } from '@/components/DataTable/interface';
 import styles from './index.less';
 import { router } from 'umi';
+import UpdateModal from '../components/UpdateModal';
 
 // export default (): React.ReactNode => (
 //   <PageHeaderWrapper>
@@ -29,6 +30,7 @@ interface IProductQueryProps extends BaseProps {
 interface IProductItem {}
 
 interface IProductQueryState {
+  // productInfo?: any;
   updateProductVisible?: boolean;
   addBatchDialogVisible?: boolean;
   currentProductID?: string;
@@ -55,6 +57,12 @@ class Query extends PureComponent<IProductQueryProps, IProductQueryState> {
     return settings.systemSettings;
   }
 
+  closeUpdateProduct = () => {
+    this.setState({
+      updateProductVisible: false,
+    });
+  }
+
   handleUpdateProduct = (record: any) => () => {
     // todo find product details
     const { _id } = record;
@@ -66,6 +74,12 @@ class Query extends PureComponent<IProductQueryProps, IProductQueryState> {
     dispatch({
       type: 'product/findProductInfo',
       payload: _id,
+    }).then((info) => {
+      // console.log(info, 'info');
+      this.setState({
+        currentProduct: info,
+        currentProductID: info._id,
+      });
     });
 
     this.setState({
@@ -76,9 +90,11 @@ class Query extends PureComponent<IProductQueryProps, IProductQueryState> {
   delProdcut = (record:any) =>{
     const { _id } = record;
     const { dispatch } = this.props;
+    
     if (!dispatch) {
       return;
     }
+
     dispatch({
       type: 'product/removeProduct',
       payload:_id,
@@ -142,22 +158,16 @@ class Query extends PureComponent<IProductQueryProps, IProductQueryState> {
         dataIndex: 'actions',
         title: '操作',
         align: 'left',
-        width: 150,
+        width: 210,
         render: (_: any, record: any) => {
           // const { kind } = record;
           return (
             <div className={styles.buttonGroup}>
-              <Tooltip title="编辑">
-                <Button icon="edit" type="primary" />
-              </Tooltip>
-              <Tooltip title="批次管理">
-                <Button icon="bars" type="default" />
-              </Tooltip>
-              <Tooltip title="删除">
-                <Popconfirm title="确定移除商品?" onConfirm={()=>this.delProdcut(record)}>
-                  <Button icon="delete" type="danger"/>
-                </Popconfirm>
-              </Tooltip>
+              <Button icon="edit" type="primary" onClick={this.handleUpdateProduct(record)} />
+              <Button icon="bars" type="default">批次管理</Button>
+              <Popconfirm title="确定移除商品?" onConfirm={()=>this.delProdcut(record)}>
+                <Button icon="delete" type="danger"/>
+              </Popconfirm>
             </div>
           );
         },
@@ -334,6 +344,7 @@ class Query extends PureComponent<IProductQueryProps, IProductQueryState> {
     } = product;
 
     return (
+      <>
       <PageHeaderWrapper
         content="查询店内商品"
         extraContent={
@@ -362,6 +373,14 @@ class Query extends PureComponent<IProductQueryProps, IProductQueryState> {
           }}
         />
       </PageHeaderWrapper>
+      <UpdateModal 
+        // productInfo={}
+        onClose={this.closeUpdateProduct}
+        productInfo={this.state.currentProduct}
+        visible={this.state.updateProductVisible}
+      />
+      </>
+
     );
   }
 }
