@@ -17,6 +17,9 @@ interface ICustomerViewState {
   currentRecord?: any;
   previewVisible?: boolean;
   customer?: string;
+  delModelVisible?:boolean;
+  confirmLoading?:boolean;
+  delId?:string;
 }
 
 @connect((s: ConnectState) => ({
@@ -30,6 +33,9 @@ class CustomerView extends PureComponent<ICustomerViewProps, ICustomerViewState>
     currentRecord: {},
     previewVisible: false,
     customer: '',
+    delModelVisible:false,
+    confirmLoading:false,
+    delId:'',
   };
 
   get columnsConfig(): ColumnProps<any>[] {
@@ -123,20 +129,49 @@ class CustomerView extends PureComponent<ICustomerViewProps, ICustomerViewState>
   };
 
   handleDeleteOne = (record: any) => () => {
-    const { dispatch = {} as TheDispatch } = this.props;
-    Modal.confirm({
-      title: '是否要删除该零售客户？',
-      content: '本次删除操作将是不可逆的，删除后的信息将无法恢复，请确认您是否要进行本次删除。',
-      okText: '删除',
-      cancelText: '取消',
-      onOk: () => {
-        dispatch({
-          type: 'customers/deleteCustomer',
-          payload: record._id,
-        });
-      },
-    });
+    this.setState({
+      delModelVisible:true,
+      delId:record._id,
+    })
+    // const { dispatch = {} as TheDispatch } = this.props;
+    // Modal.confirm({
+    //   title: '是否要删除该零售客户？',
+    //   content: '本次删除操作将是不可逆的，删除后的信息将无法恢复，请确认您是否要进行本次删除。',
+    //   okText: '删除',
+    //   cancelText: '取消',
+    //   onOk: () => {
+    //     Modal.destroyAll();
+    //     dispatch({
+    //       type: 'customers/deleteCustomer',
+    //       payload: record._id,
+    //     });
+    //   },
+    // });
   };
+
+  handleOk = () =>{
+    this.setState({
+      confirmLoading: true,
+    });
+    const { dispatch ={} as TheDispatch } = this.props;
+    const { delId } = this.state;
+    dispatch({
+      type: 'customers/deleteCustomer',
+      payload: delId,
+    }).then(()=>{
+      this.setState({
+        delModelVisible:false,
+        confirmLoading:false,
+      })
+    });
+  }
+
+  handleCancel = () =>{
+    this.setState({
+      delModelVisible:false,
+    })
+  }
+
 
   handleSearch = (value: any) => {
     const {
@@ -245,7 +280,7 @@ class CustomerView extends PureComponent<ICustomerViewProps, ICustomerViewState>
 
     const { listDetails, currentCustomer } = customers;
     const { pagination } = listDetails;
-
+    const { delModelVisible, confirmLoading } = this.state;
     return (
       <>
         <DataTable
@@ -273,6 +308,11 @@ class CustomerView extends PureComponent<ICustomerViewProps, ICustomerViewState>
         <EditCustomer
           mode={this.state.editModalMode}
           open={this.state.editModalVisible}
+          onModeChange={(mode) => {
+            this.setState({
+              editModalMode: mode,
+            });
+          }}
           onClose={this.handleEditModalClose}
           // onSave={this.handleSaveCustomer}
           onCustomerChange={(customer: string) => {
@@ -299,6 +339,16 @@ class CustomerView extends PureComponent<ICustomerViewProps, ICustomerViewState>
               });
           }}
         />
+        <Modal
+          title="是否要删除该零售客户？"
+          visible={delModelVisible}
+          onOk={this.handleOk}
+          confirmLoading={confirmLoading}
+          onCancel={this.handleCancel}
+          okType="danger"
+        >
+          <span>本次删除操作将是不可逆的，删除后的信息将无法恢复，请确认您是否要进行本次删除。</span>
+        </Modal>
       </>
     );
   }

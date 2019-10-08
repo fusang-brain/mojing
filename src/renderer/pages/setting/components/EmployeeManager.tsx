@@ -243,6 +243,7 @@ class EmployeeManager extends PureComponent<IEmployeeManagerProps, IEmployeeMana
           visible={this.state.openCreateDialog}
           okText="提交"
           cancelText="取消"
+          destroyOnClose={true}
           onCancel={this.toggleCreateDialog}
           onOk={this.handleSubmit}
         >

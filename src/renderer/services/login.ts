@@ -2,6 +2,7 @@ import request from '@/utils/request';
 
 import { genHashcode } from '@/utils/helper';
 import { Authorization, getAuthHash } from '@/utils/Authorized';
+import { ServiceFunc, ServiceRequest } from '.';
 
 const REMEMBER_KEY = genHashcode('RememberME');
 
