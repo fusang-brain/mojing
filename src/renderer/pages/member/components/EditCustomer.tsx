@@ -138,6 +138,10 @@ class EditCustomer extends PureComponent<EditCustomerViewProps, EditCustomerView
               payload: values,
             })
               .then(customerObj => {
+
+                if (!customerObj) {
+                  throw new Error('');
+                }
                 onCustomerChange && onCustomerChange(customerObj._id);
                 return customerObj._id;
               })
@@ -146,6 +150,8 @@ class EditCustomer extends PureComponent<EditCustomerViewProps, EditCustomerView
               })
               .then(()=>{
                 onModeChange && onModeChange('update');
+              }).catch(() => {
+
               });
           }
 

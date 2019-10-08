@@ -11,7 +11,6 @@ import {
   InputNumber,
   Button,
   Select,
-  Input,
   message,
 } from 'antd';
 import { FormComponentProps } from 'antd/es/form';
@@ -97,7 +96,7 @@ class AddSaleView extends PureComponent<AddSaleViewProps, AddSaleViewState> {
           console.log(record);
           return (
             <>
-              {/* <Tooltip title="添加数量">
+            {/* <Tooltip title="添加数量">
               <IconButton onClick={this.handleAddCount(record)}>
                 <Add />
               </IconButton>

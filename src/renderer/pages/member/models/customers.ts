@@ -75,6 +75,7 @@ export default {
     },
 
     *addCustomer({ payload }, { call, put, select }) {
+
       const resp: AxiosResponse = yield call(customer.create, payload);
       const { queries } = yield select((_: ConnectState) => _.customers);
       const { status, data } = resp;
@@ -90,7 +91,12 @@ export default {
         return customerObj;
       }
 
-      return {};
+      if (status === 400) {
+        message.error(data.error);
+      }
+
+      return null;
+    
     },
 
     *findCustomerProfile({ payload }, { call, put }) {
