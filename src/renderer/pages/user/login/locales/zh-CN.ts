@@ -71,5 +71,8 @@ export default {
   'user-login.option.B': '同事乙',
   'user-login.option.C': '同事丙',
   'user-login.navBar.lang': '语言',
-  'user-register.register.tab': '注册'
+  'user-register.register.tab': '注册账户',
+  'user-login.register.confirmPassword': '确认密码',
+  'user-login.register.password': '密码',
+  'user-login.register.code': '验证码',
 };

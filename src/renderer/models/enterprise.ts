@@ -38,6 +38,8 @@ export default {
           if (payment.state === 'paid') {
             // 已经付款成功，那么开通成功, 进入首页
             message.success('商铺开通成功');
+            router.push('/');
+            return;
           }
 
           // 企业创建成功, 但是未成功开通, 进入首页

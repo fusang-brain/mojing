@@ -76,7 +76,7 @@ const buttonFormItemLayout = {
 class CreateEnterprise extends Component<CreateEnterpriseProps, CreateEnterpriseState> {
   state: CreateEnterpriseState = {
     current: 0,
-    selectedVersion: 'pro',
+    selectedVersion: 'free',
     enterpriseInfo: {
       name: '',
       description: '',
@@ -155,6 +155,34 @@ class CreateEnterprise extends Component<CreateEnterpriseProps, CreateEnterprise
     });
   };
 
+  handleCreateEnterprise = () => {
+    const { 
+      dispatch = {} as TheDispatch, 
+      form 
+    } = this.props;
+
+    const { enterpriseInfo, selectedVersion } = this.state;
+
+    if (!form) {
+      return;
+    }
+
+    form.validateFieldsAndScroll(() => {
+
+      // todo 付款操作，现在是暂时的
+      dispatch({
+        type: 'enterprise/createWithPayment',
+        payload: {
+          license: selectedVersion, 
+          payKind: 'free', 
+          name: enterpriseInfo.name, 
+          description: enterpriseInfo.description, 
+          years: 1,
+        }
+      });
+    });
+  }
+
   renderBaseInfoForm = () => {
     const { form } = this.props;
     if (!form) {
@@ -217,7 +245,7 @@ class CreateEnterprise extends Component<CreateEnterpriseProps, CreateEnterprise
 
     // const { getFieldDecorator } = form;
     return (
-      <Form {...formItemLayout} className={styles.formInfo}>
+      <Form {...formItemLayout} className={styles.formInfo} >
         <div className={styles.title}>
           <Typography.Title>选择您的版本</Typography.Title>
         </div>
@@ -235,7 +263,7 @@ class CreateEnterprise extends Component<CreateEnterpriseProps, CreateEnterprise
             <Typography.Text className={styles.pointer}>15天试用全部功能</Typography.Text>
           </div>
 
-          <div
+          {/* <div
             className={classnames(styles.button, {
               [styles.selected]: this.state.selectedVersion === 'pro',
             })}
@@ -245,14 +273,14 @@ class CreateEnterprise extends Component<CreateEnterpriseProps, CreateEnterprise
               商业版
             </Typography.Title>
             <Typography.Text className={styles.pointer}>2880 元/年</Typography.Text>
-          </div>
+          </div> */}
         </div>
 
         <div className={styles.footer}>
           <Button onClick={this.prevStep} type="dashed" style={{ marginRight: '15px' }}>
             上一步
           </Button>
-          <Button type="primary">开通</Button>
+          <Button type="primary" onClick={this.handleCreateEnterprise}>开通</Button>
         </div>
       </Form>
     );

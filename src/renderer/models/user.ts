@@ -51,9 +51,6 @@ const UserModel: UserModelType = {
   effects: {
     *fetch(_, { call, put }) {},
     *fetchAfterLogin(action, { call, put, take }) {
-      // const { payload } = action;
-      // const { redirect } = payload;
-
       yield put({
         type: 'fetchCurrent',
       });

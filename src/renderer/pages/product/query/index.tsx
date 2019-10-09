@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
-import { Button, Icon, Tag, Empty, Tooltip, Popconfirm } from 'antd';
+import { Button, Icon, Tag, Empty, Popconfirm } from 'antd';
 import DataTable from '@/components/DataTable';
 // import { ColumnProps } from '@/components/DataTable/interface';
 import { BaseProps, ConnectState } from '@/models/connect';

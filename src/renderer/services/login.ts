@@ -4,6 +4,10 @@ import { genHashcode } from '@/utils/helper';
 import { Authorization, getAuthHash } from '@/utils/Authorized';
 import { ServiceFunc, ServiceRequest } from '.';
 
+export interface LoginParamsType {
+  [key: string]: any;
+}
+
 const REMEMBER_KEY = genHashcode('RememberME');
 
 export const accountLogin: ServiceFunc = async (req: ServiceRequest) => {

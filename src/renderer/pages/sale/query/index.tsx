@@ -152,7 +152,7 @@ class SaleQuery extends PureComponent<QueryViewProps> {
 
     return (
       <PageHeaderWrapper
-        title="销售查询"
+        title="销售记录"
         content="查询店内销售记录"
         extraContent={
           <Button type="primary" onClick={() => router.push('/sale/add')}>

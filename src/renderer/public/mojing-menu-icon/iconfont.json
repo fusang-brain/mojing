@@ -1,0 +1,65 @@
+{
+  "id": "1401573",
+  "name": "mojing-menu",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "10806318",
+      "name": "Finance",
+      "font_class": "-finance",
+      "unicode": "e603",
+      "unicode_decimal": 58883
+    },
+    {
+      "icon_id": "10806337",
+      "name": "List",
+      "font_class": "-list",
+      "unicode": "e604",
+      "unicode_decimal": 58884
+    },
+    {
+      "icon_id": "10806338",
+      "name": "Member",
+      "font_class": "-member",
+      "unicode": "e605",
+      "unicode_decimal": 58885
+    },
+    {
+      "icon_id": "10806340",
+      "name": "Setting",
+      "font_class": "-setting",
+      "unicode": "e606",
+      "unicode_decimal": 58886
+    },
+    {
+      "icon_id": "10806347",
+      "name": "Shopping",
+      "font_class": "-shopping",
+      "unicode": "e607",
+      "unicode_decimal": 58887
+    },
+    {
+      "icon_id": "10806350",
+      "name": "Stock",
+      "font_class": "-stock",
+      "unicode": "e608",
+      "unicode_decimal": 58888
+    },
+    {
+      "icon_id": "10806369",
+      "name": "Touch",
+      "font_class": "-touch",
+      "unicode": "e609",
+      "unicode_decimal": 58889
+    },
+    {
+      "icon_id": "10808698",
+      "name": "home",
+      "font_class": "-home",
+      "unicode": "e60b",
+      "unicode_decimal": 58891
+    }
+  ]
+}

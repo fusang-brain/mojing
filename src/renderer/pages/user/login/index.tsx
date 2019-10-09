@@ -1,4 +1,4 @@
-import { Alert, Checkbox, Button } from 'antd';
+import { Alert, Checkbox, Button, Typography } from 'antd';
 import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
 import React, { Component } from 'react';
 
@@ -12,7 +12,7 @@ import LoginComponents from './components/Login';
 import styles from './style.less';
 
 import { ConnectState } from '@/models/connect';
-import { router } from 'umi';
+import { Link } from 'umi';
 
 const { Tab, Mobile, Password, Submit } = LoginComponents;
 
@@ -147,42 +147,6 @@ class Login extends Component<LoginProps, LoginState> {
               }}
             />
           </Tab>
-          {/* <Tab key="mobile" tab={formatMessage({ id: 'user-login.login.tab-login-mobile' })}>
-            {status === 'error' &&
-              loginType === 'mobile' &&
-              !submitting &&
-              this.renderMessage(
-                formatMessage({ id: 'user-login.login.message-invalid-verification-code' }),
-              )}
-            <Mobile
-              name="mobile"
-              placeholder={formatMessage({ id: 'user-login.phone-number.placeholder' })}
-              rules={[
-                {
-                  required: true,
-                  message: formatMessage({ id: 'user-login.phone-number.required' }),
-                },
-                {
-                  pattern: /^1\d{10}$/,
-                  message: formatMessage({ id: 'user-login.phone-number.wrong-format' }),
-                },
-              ]}
-            />
-            <Captcha
-              name="captcha"
-              placeholder={formatMessage({ id: 'user-login.verification-code.placeholder' })}
-              countDown={120}
-              onGetCaptcha={this.onGetCaptcha}
-              getCaptchaButtonText={formatMessage({ id: 'user-login.form.get-captcha' })}
-              getCaptchaSecondText={formatMessage({ id: 'user-login.captcha.second' })}
-              rules={[
-                {
-                  required: true,
-                  message: formatMessage({ id: 'user-login.verification-code.required' }),
-                },
-              ]}
-            />
-          </Tab> */}
           <div>
             <Checkbox checked={autoLogin} onChange={this.changeAutoLogin}>
               <FormattedMessage id="user-login.login.remember-me" />
@@ -194,13 +158,8 @@ class Login extends Component<LoginProps, LoginState> {
           <Submit loading={submitting}>
             <FormattedMessage id="user-login.login.login" />
           </Submit>
-          <Button onClick={
-            () => {
-              router.push('/user/register');
-            } 
-          }>
-            去注册
-          </Button>
+
+          <Typography>没有账号? <Link to="/user/register">去注册</Link></Typography>
         </LoginComponents>
       </div>
     );

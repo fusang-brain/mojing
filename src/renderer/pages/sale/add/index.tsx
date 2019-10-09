@@ -340,7 +340,7 @@ class AddSaleView extends PureComponent<AddSaleViewProps, AddSaleViewState> {
 
     return (
       <>
-        <PageHeaderWrapper title="销售记录">
+        <PageHeaderWrapper title="销售">
           <div className={styles.container}>
             <div className={styles.pane}>
               <div className={styles.mainPane}>

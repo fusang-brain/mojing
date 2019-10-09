@@ -20,6 +20,9 @@ import { AxiosResponse } from 'axios';
 import { ModelType } from './connect';
 import { message } from 'antd';
 import { ServiceRequest } from '@/services';
+import { sendValiateCode } from '@/services/sms';
+import { sendRegister } from '@/services/register';
+import { isStateSuccess } from '@/utils/request';
 // import { router } from 'umi';
 
 // async function findCurrentEnterprise(id: string) {
@@ -65,9 +68,10 @@ export interface LoginModelType extends ModelType<StateType> {
   effects: {
     autoLogin: Effect;
     login: Effect;
-    getCaptcha: Effect;
+    getRegisterCaptcha: Effect;
     logout: Effect;
     doLogin: Effect;
+    register: Effect;
   };
 }
 
@@ -91,6 +95,34 @@ const Model: LoginModelType = {
   },
 
   effects: {
+
+    *register({ payload }, { call, put }) {
+      const resp: AxiosResponse = yield call(sendRegister, { body: payload });
+      const { data } = resp; 
+      if (isStateSuccess(resp)) {
+        message.success('用户注册成功');
+        // console.log(data, 'data');
+        yield put({
+          type: 'doLogin',
+          payload: {
+            token: data.token,
+            authority: data.authority,
+            user_id: data.authorization.id,
+            rememberMe: false,
+          },
+        });
+        return true;
+      } else {
+        if (data.error === 'exists user') {
+          message.error('该手机号已被占用');
+          return;
+        }
+        message.error(data.error);
+      }
+
+      return;
+    },
+
     *login({ payload }, { call, put }) {
       const { rememberMe } = payload;
       const resp: AxiosResponse = yield call(accountLogin, {
@@ -222,7 +254,17 @@ const Model: LoginModelType = {
       }
     },
 
-    *getCaptcha({ payload }, { call }) {
+    *getRegisterCaptcha({ payload }, { call }) {
+      const { mobile } = payload;
+      const resp: AxiosResponse = yield call(sendValiateCode, mobile, 'register');
+
+      if (resp.status === 200) {
+        // 验证码发送成功
+        message.success('验证码发送成功');
+        return true;
+      }
+
+      return false;
       // yield call(getFakeCaptcha, payload);
     },
 

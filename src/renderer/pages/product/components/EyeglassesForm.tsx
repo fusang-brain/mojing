@@ -106,7 +106,7 @@ class EyeglassesForm extends PureComponent<IEyeglassesFormProps, FormState> {
 
 
   render() {
-    const { form, initData } = this.props;
+    const { form, initData = {} } = this.props;
     if (!form) {
       return <Empty />;
     }
