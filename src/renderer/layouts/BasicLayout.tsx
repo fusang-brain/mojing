@@ -186,8 +186,8 @@ class BasicLayout extends Component<BasicLayoutProps> {
         }}
         // fixSiderbar
         // fixedHeader={true}
-        // iconfontUrl="https://at.alicdn.com/t/font_1401573_4gjpa81vvnx.js"
-        iconfontUrl="/mojing-menu-icon/iconfont.js"
+        iconfontUrl="http://at.alicdn.com/t/font_1401573_4gjpa81vvnx.js"
+        // iconfontUrl="./mojing-menu-icon/iconfont.js"
         headerRender={headerRender(this.triggerResizeEvent)}
         collapsedButtonRender={collapsedButtonRender}
         footerRender={footerRender}

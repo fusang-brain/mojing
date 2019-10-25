@@ -16,7 +16,7 @@ export function init() {
     darkTheme: true,
     webPreferences: {
       nodeIntegration: true,
-      devTools: true,
+      devTools: false,
     },
     show: false,
   });
